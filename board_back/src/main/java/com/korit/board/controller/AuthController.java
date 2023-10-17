@@ -5,30 +5,32 @@ import com.korit.board.aop.annotation.retrunAop;
 import com.korit.board.aop.annotation.TimeAop;
 import com.korit.board.aop.annotation.ValidAop;
 import com.korit.board.dto.SignupReqDto;
+import com.korit.board.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
+
+    private final AuthService authService;
 
     @retrunAop
     @ArgsAop
     @TimeAop
     @ValidAop // 타겟지정
-    @CrossOrigin // 시큐리티 설정을 안해서 crossorigin을 안걸어주면 데이터를 못들고 들어옴
     @PostMapping("/auth/signup")
     public ResponseEntity<?> signup(
             @Valid  @RequestBody SignupReqDto signupReqDto,
             BindingResult bindingResult) {
 
-        System.out.println("AuthController!!!");
+        System.out.println(signupReqDto);
+        System.out.println(authService.signup(signupReqDto));
 
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(null);
     }
 }

@@ -1,11 +1,10 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { instance } from '../../api/config/instance';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-const Layout = css`
+const layout = css`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -38,13 +37,14 @@ function Signup(props) {
         try {
             const response = await instance.post("/auth/signup", signupUser);
             console.log(response);
+            alert("회원가입성공!");
         }catch(error) {
             console.error(error);
         }
     }
 
     return (
-        <div css={Layout}>
+        <div css={layout}>
             <input type="email" name='email' onChange={handleInputChange} placeholder='이메일'/>
             <input type="password" name='password' onChange={handleInputChange} placeholder='비밀번호'/>
             <input type="text" name='name' onChange={handleInputChange} placeholder='이름'/>

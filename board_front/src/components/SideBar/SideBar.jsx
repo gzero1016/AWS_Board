@@ -3,9 +3,8 @@ import React from 'react';
 import { css } from '@emotion/react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Layout = css`
+const layout = css`
     margin-right: 10px;
-
     width: 320px;
 `;
 
@@ -26,7 +25,7 @@ function SideBar(props) {
     }
 
     return (
-        <div css={Layout}>
+        <div css={layout}>
             <di css={container}>
                 <h3>로그인 후 게시판을 이용해보세요</h3>
                 <div><button onClick={handleSigninClick}>로그인</button></div>

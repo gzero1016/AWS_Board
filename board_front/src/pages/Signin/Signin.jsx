@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 
-const Layout = css`
+const layout = css`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -31,7 +31,7 @@ function Signin(props) {
     }
 
     return (
-        <div css={Layout}>
+        <div css={layout}>
             <input type="email" name='email' onChange={handleInputChange} placeholder='이메일'/>
             <input type="password" name='password' onChange={handleInputChange} placeholder='비밀번호'/>
             <div>
