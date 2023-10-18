@@ -33,8 +33,10 @@ function Signin(props) {
 
     const handleSigninSubmit = async () => {
         try {
-            await instance.post("/auth/signin", signinUser);
-            alert("환영합니다!")
+            const response = await instance.post("/auth/signin", signinUser);
+            alert("로그인 성공 !");
+            localStorage.setItem("accessToken", "Bearer " + response.data)
+            window.location.replace("/");
         }catch(error) {
             if(error.response.status === 401) {
                 alert(error.response.data.authError);

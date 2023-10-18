@@ -19,10 +19,10 @@ public class PrincipalUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userMapper.findUserByEmail(email);
 
-        if(user == null) {
+        if(user == null) { // user 값이 null일 경우 예외 터트림
             throw new UsernameNotFoundException("UsernameNotFound: email 불일치");
         }
 
-        return new PrincipalUser(user);
+        return new PrincipalUser(user); // user에 값이 있을경우 PrincipalUser로 리턴해줌
     }
 }

@@ -28,7 +28,6 @@ public class AuthController {
     public ResponseEntity<?> signup(
             @Valid  @RequestBody SignupReqDto signupReqDto,
             BindingResult bindingResult) {
-
         return ResponseEntity.ok(authService.signup(signupReqDto));
     }
 
@@ -36,5 +35,10 @@ public class AuthController {
     @PostMapping("/auth/signin")
     public ResponseEntity<?> signin(@RequestBody SigninReqDto signinReqDto) {
         return ResponseEntity.ok(authService.signin(signinReqDto));
+    }
+
+    @GetMapping("/auth/token/authenticate")
+    public ResponseEntity<?> authenticate(@RequestHeader(value = "Authorization") String token) {
+        return ResponseEntity.ok(true);
     }
 }

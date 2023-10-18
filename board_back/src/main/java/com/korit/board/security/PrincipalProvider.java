@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component // IoC 등록
 @RequiredArgsConstructor
 public class PrincipalProvider implements AuthenticationProvider {
 
@@ -20,7 +20,7 @@ public class PrincipalProvider implements AuthenticationProvider {
 
     @Override // authenticate를 직접 구현 및 인증
     public Authentication authenticate(Authentication authentication) throws AuthenticationException { // AuthenticationException 얘한테 예외미룸
-        String email = authentication.getName();
+        String email = authentication.getName(); // getName 안에 email이 있음
         String password = (String) authentication.getCredentials(); // Object 로 반환되니까 String으로 다운캐스팅 해줘야함
 
         System.out.println("email: " + email);  // email 확인 getName

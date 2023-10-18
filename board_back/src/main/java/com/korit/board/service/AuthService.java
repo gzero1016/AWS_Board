@@ -7,6 +7,8 @@ import com.korit.board.exception.DuplicateException;
 import com.korit.board.jwt.JwtProvider;
 import com.korit.board.repository.UserMapper;
 import com.korit.board.security.PrincipalProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,18 +29,18 @@ public class AuthService {
     private final JwtProvider jwtProvider;
 
     public boolean signup(@RequestBody SignupReqDto signupReqDto) {
-        User user = signupReqDto.toUserEntity(passwordEncoder);
+        User user = signupReqDto.toUserEntity(passwordEncoder); // password 암호화해서 user안에 담음
 
-        int errorCode = userMapper.checkDuplicate(user);
-        if(errorCode > 0) {
+        int errorCode = userMapper.checkDuplicate(user); // email, nickname 중복확인
+        if(errorCode > 0) { // 중복이 없어야 0
             responseDuplicateError(errorCode);  // 중복된 값이 있을때 오류코드를 전달함
         }
 
-        return userMapper.saveUser(user) > 0;
+        return userMapper.saveUser(user) > 0;   // 중복확인 통과 후 정상 insert가 되면 클라이언트에게 반환해줌
     }
 
     private void responseDuplicateError(int errorCode) {
-        Map<String, String> errorMap = new HashMap<>();
+        Map<String, String> errorMap = new HashMap<>(); // 에러를 담을 Map을 생성함
 
         switch (errorCode) {
             case 1: // 이메일 중복
@@ -64,7 +66,16 @@ public class AuthService {
         // authenticate이 예외를 미루면서 여기서 처리함
         Authentication authentication = principalProvider.authenticate(authenticationToken);
 
+        // 사용자 정보를 기반으로 토큰생성해서 반환해줌
         return jwtProvider.generateToken(authentication);
     }
 
+    public boolean authenticate(String token) {
+        Claims claims = jwtProvider.getClaims(token); // token 해석해서 claims에 담음
+        if(claims == null) { // token이 없거나 해석할 수 없다면 예외 터트림
+            throw new JwtException("인증 토큰 유효성 검사 실패");
+        }
+        // 클레임 정보에서 enabled 키값을 추출하여 있으면 true 없으면 false로 반환됨
+        return Boolean.parseBoolean(claims.get("enabled").toString());
+    }
 }

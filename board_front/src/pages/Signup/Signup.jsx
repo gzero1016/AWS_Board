@@ -37,7 +37,8 @@ function Signup(props) {
         try {
             const response = await instance.post("/auth/signup", signupUser);
             console.log(response);
-            alert("회원가입성공!");
+            alert("회원가입 성공 !");
+            navigate("/auth/signin");
         }catch(error) {
             console.error(error);
             alert(error)

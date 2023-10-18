@@ -14,6 +14,6 @@ public class PrincipalEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        System.out.println(authException.getClass()); // <- 이친구 찍어봐야함
+        System.out.println(authException.getClass()); // <- 이친구 클래스타입 찍어봐야함
     }
 }

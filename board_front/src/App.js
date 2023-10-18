@@ -1,10 +1,32 @@
 import Auth from './\bcomponents/Auth/Auth';
 import RootLayout from './\bcomponents/RootLayout/RootLayout';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
+import { useQuery } from 'react-query';
+import { instance } from './api/config/instance';
 
 function App() {
+  const navigate = useNavigate();
+
+  const getPrincipal = useQuery(["getPrincipal"], async () => {
+    try {
+      const option = {
+        headers: {
+          Authorization: localStorage.getItem("accessToken")
+        }
+      }
+      return await instance.get("/account/principal", option);
+
+    } catch(error) {
+      throw new Error(error)
+    }
+  }, {
+    retry: 0,
+    refetchInterval: 1000 * 60 * 10,
+    refetchOnWindowFocus: false
+  });
+  
   return (
     <RootLayout>
       <Routes>
