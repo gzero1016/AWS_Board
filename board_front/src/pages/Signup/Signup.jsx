@@ -40,6 +40,7 @@ function Signup(props) {
             alert("회원가입성공!");
         }catch(error) {
             console.error(error);
+            alert(error)
         }
     }
 

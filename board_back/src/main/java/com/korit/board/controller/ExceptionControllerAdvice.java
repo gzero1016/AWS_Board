@@ -1,19 +1,52 @@
 package com.korit.board.controller;
 
-import com.korit.board.aop.annotation.TimeAop;
+import com.korit.board.exception.DuplicateException;
 import com.korit.board.exception.ValidException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-    @TimeAop
     @ExceptionHandler(ValidException.class)
     public ResponseEntity<?> validException(ValidException validException) {
-        System.out.println("예외처리됨!");
+        System.out.println("예외처리");
         return ResponseEntity.badRequest().body(validException.getErrorMap());
+    }
+
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<?> duplicateException(DuplicateException duplicateException) {
+        System.out.println("이메일, 닉네임 중복검사 오류 예외처리");
+        return ResponseEntity.badRequest().body(duplicateException.getErrorMap());
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class) // email 불일치
+    public ResponseEntity<?> usernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
+        Map<String, String> message = new HashMap<>();
+        message.put("authError", "사용자 정보를 확인해주세요.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message); // UNAUTHORIZED: 401
+    }
+
+    @ExceptionHandler(BadCredentialsException.class) // password 불일치
+    public ResponseEntity<?> badCredentialsException(BadCredentialsException badCredentialsException) {
+        Map<String, String> message = new HashMap<>();
+        message.put("authError", "사용자 정보를 확인해주세요.");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message); // UNAUTHORIZED: 401
+    }
+
+    @ExceptionHandler(DisabledException.class) // password 불일치
+    public ResponseEntity<?> disabledException(DisabledException disabledException) {
+        Map<String, String> message = new HashMap<>();
+        message.put("disabled", "이메일 인증이 필요합니다.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(message); // FORBIDDEN: 403
     }
 
 }

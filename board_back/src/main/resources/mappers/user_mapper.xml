@@ -4,6 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korit.board.repository.UserMapper">
 
+    <!--  property 는 entity에 있는 변수명 , column DB에 있는 컬럼명  -->
+    <resultMap id="userMap" type="com.korit.board.entity.User">
+        <id property="userId" column="user_id" />
+        <result property="email" column="email" />
+        <result property="password" column="password" />
+        <result property="name" column="name" />
+        <result property="nickname" column="nickname" />
+        <result property="enabled" column="enabled" />
+    </resultMap>
+
     <insert id="saveUser" parameterType="com.korit.board.entity.User">
         insert into user_tb
         values(0, #{email}, #{password}, #{name}, #{nickname}, 0);
@@ -16,15 +26,30 @@
             from
                 user_tb
             where
-                email = 'gzero1016@gmail.com'
+                email = #{email}
             )
             + (select
                 if(count(*) > 0, 2, 0)
             from
                 user_tb
             where
-                nickname = '하루'
+                nickname = #{nickname}
             ) as result;
+    </select>
+
+    <!--  파라미터 타입 생략가능  -->
+    <select id="findUserByEmail" resultMap="userMap">
+        select
+            user_id,
+            email,
+            password,
+            name,
+            nickname,
+            enabled
+        from
+            user_tb
+        where
+            email = #{email};
     </select>
 
 </mapper>

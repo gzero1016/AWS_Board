@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { instance } from '../../api/config/instance';
 
 const layout = css`
     display: flex;
@@ -30,12 +31,23 @@ function Signin(props) {
         navigate("/auth/signup");
     }
 
+    const handleSigninSubmit = async () => {
+        try {
+            await instance.post("/auth/signin", signinUser);
+            alert("환영합니다!")
+        }catch(error) {
+            if(error.response.status === 401) {
+                alert(error.response.data.authError);
+            }
+        }
+    }
+
     return (
         <div css={layout}>
             <input type="email" name='email' onChange={handleInputChange} placeholder='이메일'/>
             <input type="password" name='password' onChange={handleInputChange} placeholder='비밀번호'/>
             <div>
-                <button>로그인</button>
+                <button onClick={handleSigninSubmit}>로그인</button>
                 <button onClick={handlesignupOnClick}>회원가입</button>
             </div>
         </div>
