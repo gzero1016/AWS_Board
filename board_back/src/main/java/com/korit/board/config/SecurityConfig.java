@@ -31,8 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/auth/**")  // 특정 url 지정
                 .permitAll() //  클라이언트에게 받은 요청을 필터를 거치지않고 컨트롤러로 넘겨주겠다.
-                .anyRequest()
-                .authenticated()
+                .anyRequest() // 나머지요청들은
+                .authenticated() // jwtAuthenticationFilter 에서 인증을 거쳐야한다. (Security안에 authentication의 객체가 있냐 없냐를 검사)
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()  // 인증과정에서 오류가나면 잡아서

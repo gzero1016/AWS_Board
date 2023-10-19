@@ -1,5 +1,5 @@
 import React from 'react';
-import RootContainer from '../../\bcomponents/RootContainer/RootContainer';
+import RootContainer from '../../components/RootContainer/RootContainer';
 
 function Home(props) {
     return (

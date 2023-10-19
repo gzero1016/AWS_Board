@@ -21,9 +21,9 @@ const container = css`
 function SideBar(props) {
     const navigate = useNavigate();
 
-    const queryClient = useQueryClient();
+    const queryClient = useQueryClient(); // queryClient 객체를 가져옴
 
-    const principalState = queryClient.getQueryState("getPrincipal")
+    const principalState = queryClient.getQueryState("getPrincipal") 
 
     const signinOnClick = () => {
         navigate("/auth/signin");
@@ -31,7 +31,8 @@ function SideBar(props) {
 
     const LogoutOnClick = () => {
         localStorage.removeItem("accessToken");
-        window.location.replace("/")
+        window.location.replace("/") // replace: 완전 재시작 , 상태 다 날라감
+        // navigate: 페이지 이동은 되지만 , 상태가 유지됨 (useQuery가 재실행안됨)
     }
 
     return (
@@ -49,7 +50,7 @@ function SideBar(props) {
                     <h3>로그인 후 게시판을 이용해보세요</h3>
                     <div><button onClick={signinOnClick}>로그인</button></div>
                     <div>
-                        <Link to={"/auth/forgot/password"}>비밀번호 찾기</Link>
+                        <Link to={"/auth/forgot/password"}>비밀번호 찾기 | </Link>
                         <Link to={"/auth/signup"}>회원가입 찾기</Link>
                     </div>
                 </div>

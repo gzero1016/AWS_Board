@@ -15,8 +15,7 @@ public class BoardController {
 
     @ValidAop
     @PostMapping("/board/{category}")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterBoardReqDto registerBoardReqDto,
-                                      BindingResult bindingResult) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterBoardReqDto registerBoardReqDto, BindingResult bindingResult) {
 
         return ResponseEntity.ok(true);
     }

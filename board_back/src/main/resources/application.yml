@@ -5,6 +5,14 @@ spring:
     url: jdbc:mysql://localhost:3306/board
     username: root
     password: 1q2w3e4r
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: gzero1016@gmail.com
+    password: mdmdctamdrfhaoze
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
 
 mybatis:
   mapper-locations:

@@ -25,8 +25,7 @@ public class JwtProvider {
     private final UserMapper userMapper;
 
     // yml 에 있는 key를 들고오는 방법
-    public JwtProvider(@Value("${jwt.secret}") String secret,
-                       @Autowired UserMapper userMapper) {
+    public JwtProvider(@Value("${jwt.secret}") String secret, @Autowired UserMapper userMapper) {
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
         this.userMapper = userMapper;
     }
@@ -35,8 +34,6 @@ public class JwtProvider {
                     // 현재 사용자의 인증 및 권한 정보를 포함하는 인터페이스
     public String generateToken(Authentication authentication) { // 매개변수로 현재 사용자의 인증 정보를 받음
         String email = authentication.getName(); // 받아온 정보의 getName안에있는 email을 추출함
-        // PrincipalUser로 반환을 해야하는데 Object로 반환이 되니까 다운캐스팅을 해준다.
-        PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
         // token 유효시간 설정 아래는 24시간
         Date date = new Date(new Date().getTime() + (1000 * 60 * 60 * 24));
@@ -45,12 +42,11 @@ public class JwtProvider {
                 .setSubject("AccessToken") // 토큰의 서브젝트(Subject) 설정 : 토큰이름
                 .setExpiration(date) // 토큰의 유효시간 설정
                 .claim("email", email) // 토큰 내에 이메일 정보를 포함
-                .claim("isEnabled", principalUser.isEnabled()) // 토큰 내에 isEnabled(이메일 인증) 여부를 포함
                 .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘 설정
                 .compact(); // 생성된 토큰을 문자열로 클라이언트에게 반환
-    }
+    } // Jwt에는 최대한 공개되도되는 최소한의 정보로 만들어야함
 
-    public Claims getClaims(String token) { // JWT 해석하는 로직
+    public Claims getClaims(String token) { // JWT 해석하는 로직 유효기간이 지났거나 위조가 되었을 경우 예외 터트림
         Claims claims = null; // 초기화
 
         try {
@@ -72,17 +68,18 @@ public class JwtProvider {
         return bearerToken.substring("Bearer ".length());
     }
 
+    // getClaims 에서 해석된 리턴값을 가지고와서 토큰이 비었는지 검사
     public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
         if(claims == null) {
             return null;
         }
-
+        // 데이터베이스에서 email 꺼내옴
         User user = userMapper.findUserByEmail(claims.get("email").toString());
         if(user == null) {
             return null;
         }
-
+        // 꺼내온 email을 principalUser에 user를 집어넣음
         PrincipalUser principalUser = new PrincipalUser(user);
 
         return new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());

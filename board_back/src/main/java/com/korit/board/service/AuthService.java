@@ -59,8 +59,9 @@ public class AuthService {
     }
 
     public String signin(SigninReqDto signinReqDto) {
+        // 클라이언트에게 받은 이메일과 비밀번호로 authentication 객체를 생성
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(signinReqDto.getEmail(), signinReqDto.getPassword()); // 토큰생성
+                new UsernamePasswordAuthenticationToken(signinReqDto.getEmail(), signinReqDto.getPassword());
 
         // 토큰을 갖고 인증 리턴은 authenticate 객체 / authenticate 이 호출되면 loadUserByUsername 호출됨
         // authenticate이 예외를 미루면서 여기서 처리함

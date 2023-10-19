@@ -23,10 +23,10 @@ public class JwtAuthenticationFilter extends GenericFilter {
 
         String bearerToken = httpServletRequest.getHeader("Authorization");
         String token = jwtProvider.getToken(bearerToken);
-
         Authentication authentication = jwtProvider.getAuthentication(token);
 
         if(authentication != null) {
+            // SecurityContextHolder에 Provider에서 해체된 토큰의 정보를 인증해서 넣어줌 정보가있으면 인증완료
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

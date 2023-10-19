@@ -33,9 +33,9 @@ function Signin(props) {
 
     const handleSigninSubmit = async () => {
         try {
-            const response = await instance.post("/auth/signin", signinUser);
+            const response = await instance.post("/auth/signin", signinUser); // 만들어진 토큰을 가져옴
             alert("로그인 성공 !");
-            localStorage.setItem("accessToken", "Bearer " + response.data)
+            localStorage.setItem("accessToken", "Bearer " + response.data) // localStorage에 토큰 저장
             window.location.replace("/");
         }catch(error) {
             if(error.response.status === 401) {
