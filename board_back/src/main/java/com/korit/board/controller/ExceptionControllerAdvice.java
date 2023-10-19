@@ -1,10 +1,12 @@
 package com.korit.board.controller;
 
+import com.korit.board.exception.AuthMailException;
 import com.korit.board.exception.DuplicateException;
 import com.korit.board.exception.ValidException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -55,6 +57,13 @@ public class ExceptionControllerAdvice {
         Map<String, String> message = new HashMap<>();
         message.put("jwt", "인증이 유효하지 않습니다.");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message); // Status -> UNAUTHORIZED: 401
+    }
+
+    @ExceptionHandler(AuthMailException.class) // token 유효성 검사
+    public ResponseEntity<?> mailException(AuthMailException mailException) {
+        Map<String, String> message = new HashMap<>();
+        message.put("mailException", mailException.getMessage());
+        return ResponseEntity.ok().body(message); // ok로 안주면 오류뜸
     }
 
 }

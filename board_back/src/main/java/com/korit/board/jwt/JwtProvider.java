@@ -85,4 +85,14 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
     }
 
+    public String generateAuthMailToken(String email) {
+        Date date = new Date(new Date().getTime() + 1000 * 60 * 5); // 토큰 만료기간 5분
+
+        return Jwts.builder()
+                .setSubject("AuthenticationEmailToken") // 토큰이름
+                .setExpiration(date) // 만료시간
+                .claim("email", email) // 토큰에 포함할 내용
+                .signWith(key, SignatureAlgorithm.HS256) // 알고리즘, 키 설정
+                .compact(); // 토큰 생성
+    }
 }

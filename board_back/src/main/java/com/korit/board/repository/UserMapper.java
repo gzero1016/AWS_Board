@@ -8,4 +8,5 @@ public interface UserMapper {
     public Integer saveUser(User user);
     public Integer checkDuplicate(User user);
     public User findUserByEmail(String email);
+    public Integer updateEnabledToEmail(String email);
 }
