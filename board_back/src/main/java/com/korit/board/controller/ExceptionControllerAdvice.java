@@ -2,6 +2,7 @@ package com.korit.board.controller;
 
 import com.korit.board.exception.AuthMailException;
 import com.korit.board.exception.DuplicateException;
+import com.korit.board.exception.MismatchedPasswordException;
 import com.korit.board.exception.ValidException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
@@ -64,6 +65,13 @@ public class ExceptionControllerAdvice {
         Map<String, String> message = new HashMap<>();
         message.put("mailException", mailException.getMessage());
         return ResponseEntity.ok().body(message); // ok로 안주면 오류뜸
+    }
+
+    @ExceptionHandler(MismatchedPasswordException.class) // token 유효성 검사
+    public ResponseEntity<?> mismatchedPasswordException(MismatchedPasswordException mismatchedPasswordException) {
+        Map<String, String> message = new HashMap<>();
+        message.put("mismatched", mismatchedPasswordException.getMessage());
+        return ResponseEntity.badRequest().body(message);
     }
 
 }

@@ -11,4 +11,5 @@ public interface UserMapper {
     public User findUserByEmail(String email);
     public Integer updateEnabledToEmail(String email);
     public Integer updateProfileImg(User user);
+    public Integer updatePassword(User user);
 }

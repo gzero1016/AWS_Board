@@ -36,6 +36,14 @@
             email = #{email};
     </update>
 
+    <update id="updatePassword" parameterType="com.korit.board.entity.User">
+        update user_tb
+        set
+            password = #{password}
+        where
+            email = #{email};
+    </update>
+
     <select id="checkDuplicate" parameterType="com.korit.board.entity.User" resultType="integer">
         select
             (select
