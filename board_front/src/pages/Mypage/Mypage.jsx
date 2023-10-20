@@ -1,12 +1,66 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQueryClient } from 'react-query';
 import { instance } from '../../api/config/instance';
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { storage } from "firebase/storage";
+
+const infoHeader = css`
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+`;
+
+const imgBox = css`
+    margin-right: 20px;
+    border: 1px solid #dbdbdb;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    cursor: pointer;
+`;
+
+const textBox = css`
+    margin: 0px 14px;
+`;
+
+const file = css`
+    display: none;
+`;
 
 function Mypage(props) {
     const queryClient = useQueryClient();
     const principalState = queryClient.getQueryState("getPrincipal");
     const principal = principalState.data.data;
+    const profileFileRef = useRef();
+    const [ uploadFiles, setUploadFiles ] = useState([]);
+
+    const handleProfileUploadClick = () => {
+        if(window.confirm("프로필 사진을 변경하시겠습니까?")) {
+            profileFileRef.current.click();
+        }
+    }
+
+    const handleProfileChange = (e) => {
+        const files = e.target.files;
+
+        if(files.length === 0) {
+            return;
+        }
+
+        for(let file of files) {
+            setUploadFiles([
+                ...uploadFiles, file
+            ]);
+        }
+    }
 
     const handleSendMail = async () => {
         try {
@@ -26,13 +80,24 @@ function Mypage(props) {
     return (
         <RootContainer>
             <div>
-                <div>
-                    <img src="" alt="" />
+                <div css={infoHeader}>
+                    <div>
+                        <div css={imgBox} onClick={handleProfileUploadClick}>
+                            <img src="" alt="" />
+                        </div>
+                        <input css={file} type="file" onChange={handleProfileChange} ref={profileFileRef}/>
+                        {!uploadFiles && 
+                            <div>
+                                <button></button>
+                                <button></button>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        누적 포인트: 0원
+                    </div>
                 </div>
-                <div>
-                    누적 포인트: 0원
-                </div>
-                <div>
+                <div css={textBox}>
                     <div>닉네임: {principal.nickname} </div>
                     <div>이름: {principal.name} </div>
                     <div>

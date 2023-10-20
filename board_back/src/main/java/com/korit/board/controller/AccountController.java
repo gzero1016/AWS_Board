@@ -34,6 +34,11 @@ public class AccountController {
         return ResponseEntity.ok(mailService.sendAuthMail()); // response에 응답을 mailToken을 날려줌
     }
 
+    @PostMapping("/account/profile/img")
+    public ResponseEntity<?> uploadProfileImg() {
+        return ResponseEntity.ok(null);
+    }
+
     @GetMapping("/auth/mail")
     public ResponseEntity<?> authenticateMail(String token) {
         return ResponseEntity.ok(accountService.authenticateMail(token) ? "인증이 완료되었습니다." : "인증 실패");
