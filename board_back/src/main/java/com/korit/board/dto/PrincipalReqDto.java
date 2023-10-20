@@ -12,4 +12,5 @@ public class PrincipalReqDto {
     private String name;
     private String nickname;
     private Boolean enabled;
+    private String profileUrl;
 }

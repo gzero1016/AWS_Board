@@ -20,4 +20,4 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
-export const storage = getStorage(app);
+export const storage = getStorage(app); // 핵심

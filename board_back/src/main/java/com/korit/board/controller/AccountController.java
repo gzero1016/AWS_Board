@@ -1,6 +1,7 @@
 package com.korit.board.controller;
 
 import com.korit.board.dto.PrincipalReqDto;
+import com.korit.board.dto.UpdateProfileImgReqDto;
 import com.korit.board.entity.User;
 import com.korit.board.security.PrincipalUser;
 import com.korit.board.service.AccountService;
@@ -8,9 +9,7 @@ import com.korit.board.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,9 +33,9 @@ public class AccountController {
         return ResponseEntity.ok(mailService.sendAuthMail()); // response에 응답을 mailToken을 날려줌
     }
 
-    @PostMapping("/account/profile/img")
-    public ResponseEntity<?> uploadProfileImg() {
-        return ResponseEntity.ok(null);
+    @PutMapping("/account/profile/img")
+    public ResponseEntity<?> updateProfileImg(@RequestBody UpdateProfileImgReqDto updateProfileImgReqDto) {
+        return ResponseEntity.ok(accountService.updateProfileImg(updateProfileImgReqDto));
     }
 
     @GetMapping("/auth/mail")

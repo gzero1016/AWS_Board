@@ -16,6 +16,10 @@ const container = css`
     border: 1px solid #dbdbdb;
     border-radius: 10px;
     padding: 20px;
+
+    & button {
+        margin-bottom: 5px;
+    }
 `;
 
 function SideBar(props) {
