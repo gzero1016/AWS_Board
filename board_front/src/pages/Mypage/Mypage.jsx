@@ -7,6 +7,7 @@ import { css } from '@emotion/react';
 import { ref, getDownloadURL, uploadBytes, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../api/firebase/firebase";
 import { Line } from 'rc-progress';
+import { Link } from 'react-router-dom';
 
 const infoHeader = css`
     display: flex;
@@ -185,6 +186,7 @@ function Mypage(props) {
                         ? <button disabled={true}>인증완료</button> 
                         : <button onClick={handleSendMail}>인증하기</button>}
                     </div>
+                    <Link to={"/account/password"}>비밀번호 변경</Link>
                 </div>
             </div>
         </RootContainer>
