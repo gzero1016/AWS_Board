@@ -2,6 +2,8 @@ package com.korit.board.config;
 
 import com.korit.board.filter.JwtAuthenticationFilter;
 import com.korit.board.security.PrincipalEntryPoint;
+import com.korit.board.security.oauth2.OAuth2SuccessHandler;
+import com.korit.board.service.PrincipalUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PrincipalEntryPoint principalEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final PrincipalUserDetailsService principalUserDetailsService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean  // IoC 등록
     public BCryptPasswordEncoder passwordEncoder() {
@@ -36,6 +40,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()  // 인증과정에서 오류가나면 잡아서
-                .authenticationEntryPoint(principalEntryPoint);  // Entry 포인트로 던짐
+                .authenticationEntryPoint(principalEntryPoint) // Entry 포인트로 던짐
+                .and()
+                .oauth2Login()  // 카카오 로그인
+                .loginPage("http://localhost:3000/auth/signin") // 요청날릴 주소
+                .successHandler(oAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(principalUserDetailsService);
     }
+
 }

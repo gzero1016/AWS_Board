@@ -28,12 +28,13 @@ function EditPassword(props) {
             await instance.put("/account/password", passwordObj, option);
             alert("비밀번호 변경완료");
             navigate("/account/mypage");
-        }catch(error){
-            console.error(error)
+        }catch(error) {
             if(error.response.data.mismatched){
                 alert(error.response.data.mismatched);
+                console.log(error.response.data.mismatched);
             }else if(error.response.data.authError){
                 alert(error.response.data.authError);
+                console.log(error.response.data.authError);
             }
         }
     }

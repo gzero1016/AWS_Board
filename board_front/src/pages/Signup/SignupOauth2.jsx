@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { instance } from '../../api/config/instance';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 
 const layout = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    
     & > input {
         margin-bottom: 5px;
     }
@@ -22,17 +23,29 @@ const buttonBox = css`
     }
 `;
 
-function Signup(props) {
+function SignupOauth2(props) {
+    const [ searchParams, setSearchParams ] = useSearchParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(!window.confirm("등록되지 않은 간편로그인 사용자입니다. 회원등록 하시겠습니까?")) {
+            window.location.replace("/auth/signin");
+        }
+    }, [])
     
     const user = {
         email: "",
         password: "",
-        name: "",
-        nickname: ""
+        name: searchParams.get("name"),
+        nickname: "",
+        oauth2Id: searchParams.get("oauth2Id"),
+        profileImg: searchParams.get("profileImg"),
+        provider: searchParams.get("provider")
     }
 
-    const [ signupUser, setSignupUser ] = useState();
+    console.log(user);
+
+    const [ signupUser, setSignupUser ] = useState(user);
 
     const handleInputChange = (e) => {
         setSignupUser({
@@ -61,7 +74,7 @@ function Signup(props) {
         <div css={layout}>
             <input type="email" name='email' onChange={handleInputChange} placeholder='이메일'/>
             <input type="password" name='password' onChange={handleInputChange} placeholder='비밀번호'/>
-            <input type="text" name='name' onChange={handleInputChange} placeholder='이름'/>
+            <input type="text" name='name' value={signupUser.name} onChange={handleInputChange} placeholder='이름' disabled={true}/>
             <input type="text" name='nickname' onChange={handleInputChange} placeholder='닉네임'/>
             <div css={buttonBox}>
                 <button onClick={handleSignupSubmit}>가입하기</button>
@@ -71,4 +84,4 @@ function Signup(props) {
     );
 }
 
-export default Signup;
+export default SignupOauth2;
