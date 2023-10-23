@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { instance } from '../../api/config/instance';
+import { useNavigate } from 'react-router-dom';
 
 function EditPassword(props) {
+    const navigate = useNavigate();
     const [ passwordObj, setPasswordObj ] = useState({
         oldPassword: "",
         newPassword: "",
@@ -14,7 +16,6 @@ function EditPassword(props) {
             ...passwordObj,
             [e.target.name]: e.target.value
         });
-        console.log(passwordObj);
     }
 
     const handleUpdatePasswordSubmit = async () => {
@@ -26,9 +27,14 @@ function EditPassword(props) {
             }
             await instance.put("/account/password", passwordObj, option);
             alert("비밀번호 변경완료");
+            navigate("/account/mypage");
         }catch(error){
             console.error(error)
-            alert("비밀번호 변경 오류")
+            if(error.response.data.mismatched){
+                alert(error.response.data.mismatched);
+            }else if(error.response.data.authError){
+                alert(error.response.data.authError);
+            }
         }
     }
 
