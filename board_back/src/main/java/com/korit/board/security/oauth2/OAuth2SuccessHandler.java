@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,11 +29,14 @@ public class OAuth2SuccessHandler  extends SimpleUrlAuthenticationSuccessHandler
             DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
             String name = defaultOAuth2User.getAttributes().get("name").toString();
             String profileImg = defaultOAuth2User.getAttributes().get("profile_image").toString();
+            String provider = defaultOAuth2User.getAttributes().get("provider").toString();
 
+            // sendRedirect: 키,값을 담아 get요청 http://localhost:3000/auth/oauth2/signup <- 여기로이동
             response.sendRedirect("http://localhost:3000/auth/oauth2/signup" +
                     "?oauth2Id=" + oauth2Id +
                     "&name=" + URLEncoder.encode(name, "UTF-8") +
-                    "&profileImg=" + profileImg);
+                    "&profileImg=" + profileImg +
+                    "&provider=" + provider);
         }
     }
 }

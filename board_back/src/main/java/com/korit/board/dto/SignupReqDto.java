@@ -30,8 +30,8 @@ public class SignupReqDto {
                 .name(name)
                 .nickname(nickname)
                 .oauth2Id(oauth2Id)
-                .provider(provider)
                 .profileUrl(profileImg)
+                .provider(provider)
                 .build();
     }
 }

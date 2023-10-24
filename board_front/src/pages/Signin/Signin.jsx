@@ -26,7 +26,6 @@ const buttonBox = css`
 
 function Signin(props) {
     const navigate = useNavigate();
-
     const user = {
         email: "",
         password: ""
@@ -58,6 +57,7 @@ function Signin(props) {
         }
     }
 
+    // href: backEnd 서버로 이동 navigate랑 다름
     const handleKakaoLogin = () => {
         window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
     }

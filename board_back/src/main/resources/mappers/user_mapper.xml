@@ -28,16 +28,18 @@
             #{nickname},
             0,
             <choose>
+                <!-- profileUrl이 없거나 공백일 경우 데이터베이스에 디폴트값을 넣어주고 -->
                 <when test='profileUrl==null or profileUrl.equals("")'>
                     default,
                 </when>
+                <!-- 값이 있으면 해당 url을 넣어줌 -->
                 <otherwise>
-                    #{profileUrl}
+                    #{profileUrl},
                 </otherwise>
             </choose>
             #{oauth2Id},
             #{provider}
-        )
+        );
     </insert>
 
     <update id="updateEnabledToEmail" parameterType="com.korit.board.entity.User">
@@ -60,6 +62,15 @@
         update user_tb
         set
             password = #{password}
+        where
+            email = #{email};
+    </update>
+
+    <update id="updateOauth2IdAndProvider" parameterType="com.korit.board.entity.User">
+        update user_tb
+        set
+            oauth2_id = #{oauth2Id},
+            provider = #{provider}
         where
             email = #{email};
     </update>
@@ -114,7 +125,7 @@
         from
             user_tb
         where
-            oauth2_id = #{oauth2Id}
+            oauth2_id = #{oauth2Id};
     </select>
 
 </mapper>

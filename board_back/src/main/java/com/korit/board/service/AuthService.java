@@ -1,5 +1,6 @@
 package com.korit.board.service;
 
+import com.korit.board.dto.MergeOauth2ReqDto;
 import com.korit.board.dto.SigninReqDto;
 import com.korit.board.dto.SignupReqDto;
 import com.korit.board.entity.User;
@@ -10,12 +11,15 @@ import com.korit.board.security.PrincipalProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,5 +82,17 @@ public class AuthService {
         }
         // 클레임 정보에서 enabled 키값을 추출하여 있으면 true 없으면 false로 반환됨
         return Boolean.parseBoolean(claims.get("enabled").toString());
+    }
+
+    @Transactional(rollbackFor = Exception.class) // 실패시 원상복구
+    public boolean mergeOauth2(MergeOauth2ReqDto mergeOauth2ReqDto) {
+        User user = userMapper.findUserByEmail(mergeOauth2ReqDto.getEmail());
+
+        // 입력받은 비밀번호와 저장되어있는 사용자 비밀번호가 일치한지 확인
+        if(!passwordEncoder.matches(mergeOauth2ReqDto.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("BadCredentials");
+        }
+
+        return userMapper.updateOauth2IdAndProvider(mergeOauth2ReqDto.toUserEntity()) > 0;
     }
 }

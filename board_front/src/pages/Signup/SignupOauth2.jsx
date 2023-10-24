@@ -66,7 +66,12 @@ function SignupOauth2(props) {
             navigate("/auth/signin");
         }catch(error) {
             console.error(error);
-            alert(error)
+            if(Object.keys(error.response.data).includes("email")) {
+                // 계정 통합 권유
+                if(window.confirm(`해당 이메일로 가입된 계정이 있습니다. \n${signupUser.provider} 계정과 연결하시겠습니까?`)) {
+                    navigate(`/auth/oauth2/signup/merge?oauth2Id=${signupUser.oauth2Id}&email=${signupUser.email}&provider=${signupUser.provider}`);
+                }
+            }
         }
     }
 
