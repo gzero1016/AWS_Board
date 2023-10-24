@@ -55,7 +55,7 @@ function SideBar(props) {
                     <div><button onClick={signinOnClick}>로그인</button></div>
                     <div>
                         <Link to={"/auth/forgot/password"}>비밀번호 찾기 | </Link>
-                        <Link to={"/auth/signup"}>회원가입 찾기</Link>
+                        <Link to={"/auth/signup"}>회원가입</Link>
                     </div>
                 </div>
             )}

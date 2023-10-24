@@ -15,12 +15,15 @@ public class BoardService {
     private final BoardMapper boardMapper;
 
     public List<BoardCategoryRespDto> getBoardCategoriesAll() {
+        // boardCategoryRespDtos List를 생성
         List<BoardCategoryRespDto> boardCategoryRespDtos = new ArrayList<>();
 
+        // Mapper를 통해 DB에서 가져온 category를 하나씩 꺼내서 boardCategoryRespDtos List에 추가함
         boardMapper.getBoardCategories().forEach(category -> {
             boardCategoryRespDtos.add(category.toCategoryDto());
         });
 
+        // 추가가된 boardCategoryRespDtos List를 반환해줌
         return boardCategoryRespDtos;
     }
 }

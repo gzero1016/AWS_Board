@@ -46,8 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .oauth2Login()  // 추가 oauth2Login 설정
                 .loginPage("http://localhost:3000/auth/signin") // 요청날릴 주소
-                .successHandler(oAuth2SuccessHandler) // 응답하는부분 (후처리)
-                .userInfoEndpoint() // 성공한 사용자 토큰, 인가, 정보를 authentication 객체로 가져옴
+                .successHandler(oAuth2SuccessHandler) // Service에서 정상적으로 리턴을 받았을 경우 응답하는부분 (후처리)
+                .userInfoEndpoint() // 사용자 토큰, 인가, 정보를 가져옴
                 .userService(principalUserDetailsService);  // principalUserDetailsService 에 loadUser로 던져줌
     }
 

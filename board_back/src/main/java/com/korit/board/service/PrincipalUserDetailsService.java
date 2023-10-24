@@ -38,13 +38,15 @@ public class PrincipalUserDetailsService implements UserDetailsService, OAuth2Us
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService = new DefaultOAuth2UserService();
+        // 네이버에서 응답은 모든 정보들이 oAuth2User안에 들어있음
         OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);
-
+        // oAuth2User안에 attributes, response 를 꺼내 분리함
         Map<String, Object> attributes = oAuth2User.getAttributes();
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
         String provider = userRequest.getClientRegistration().getClientName();
         response.put("provider", provider);
 
+        System.out.println("oAuth2User: " + oAuth2User);
         System.out.println("attributes: " + attributes);
         System.out.println("response: " + response);
 
