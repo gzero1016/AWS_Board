@@ -11,10 +11,9 @@ const rootContainer = css`
 
 const mainContainer = css`
     flex-grow: 1;
-    height: 100%;
     border: 1px solid #dbdbdb;
     border-radius: 10px;
-    padding: 20px;
+    padding: 20px 20px;
 `;
 
 function RootContainer({ children }) {
