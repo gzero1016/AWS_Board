@@ -21,8 +21,13 @@ public class JwtAuthenticationFilter extends GenericFilter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
+        // bearer가 붙어있는 Token
         String bearerToken = httpServletRequest.getHeader("Authorization");
+
+        // bearer를 뺀 오리지널 token
         String token = jwtProvider.getToken(bearerToken);
+
+        // principal + 암호화되지않은 password (제외가능함) + Authorities 를 받아 authentication 객체를 생성함
         Authentication authentication = jwtProvider.getAuthentication(token);
 
         if(authentication != null) {

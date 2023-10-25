@@ -62,12 +62,12 @@ public class AccountService {
         User user = principalUser.getUser();
 
         // 기존비밀번호와 변경할 비밀번호가 일치한지 확인
-        if(!passwordEncoder.matches(updatePasswordReqDto.getOldPassword(), user.getPassword())) {
+        if(passwordEncoder.matches(updatePasswordReqDto.getNewPassword(), user.getPassword())) {
             throw new BadCredentialsException("BadCredentials");
         }
 
-        // 새로운 비밀번호와 재입력받은 비밀번호를 확인
-        if(!Objects.equals(updatePasswordReqDto.getOldPassword(), updatePasswordReqDto.getCheckNewPassword())) {
+        // 새로운 비밀번호와 재입력받은 비밀번호를 확인ㄴ
+        if(!Objects.equals(updatePasswordReqDto.getNewPassword(), updatePasswordReqDto.getCheckNewPassword())) {
             throw new MismatchedPasswordException();
         }
 

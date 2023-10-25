@@ -8,6 +8,18 @@ const layout = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    & > input {
+        margin-bottom: 5px;
+    }
+`;
+
+const buttonBox = css`
+
+    & > button {
+        margin-right: 1.5px;
+        width: 85px;
+    }
 `;
 
 function Signup(props) {
@@ -51,7 +63,7 @@ function Signup(props) {
             <input type="password" name='password' onChange={handleInputChange} placeholder='비밀번호'/>
             <input type="text" name='name' onChange={handleInputChange} placeholder='이름'/>
             <input type="text" name='nickname' onChange={handleInputChange} placeholder='닉네임'/>
-            <div>
+            <div css={buttonBox}>
                 <button onClick={handleSignupSubmit}>가입하기</button>
                 <button onClick={handleSigninClick}>로그인</button>
             </div>

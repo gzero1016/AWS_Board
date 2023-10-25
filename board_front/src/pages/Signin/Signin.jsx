@@ -8,17 +8,30 @@ const layout = css`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    & > input {
+        margin-bottom: 5px;
+    }
+`;
+
+const buttonBox = css`
+    & > button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 5px;
+        width: 173px;
+    }
 `;
 
 function Signin(props) {
     const navigate = useNavigate();
-
     const user = {
         email: "",
         password: ""
     }
 
-    const [ signinUser, setSigninUser ] = useState();
+    const [ signinUser, setSigninUser ] = useState(user);
 
     const handleInputChange = (e) => {
         setSigninUser({
@@ -44,13 +57,24 @@ function Signin(props) {
         }
     }
 
+    // href: backEnd 서버로 이동 navigate랑 다름
+    const handleKakaoLogin = () => {
+        window.location.href = "http://localhost:8080/oauth2/authorization/kakao";
+    }
+
+    const handleNaverLogin = () => {
+        window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+    }
+
     return (
         <div css={layout}>
             <input type="email" name='email' onChange={handleInputChange} placeholder='이메일'/>
             <input type="password" name='password' onChange={handleInputChange} placeholder='비밀번호'/>
-            <div>
+            <div css={buttonBox}>
                 <button onClick={handleSigninSubmit}>로그인</button>
                 <button onClick={handlesignupOnClick}>회원가입</button>
+                <button onClick={handleKakaoLogin}>카카오 로그인</button>
+                <button onClick={handleNaverLogin}>네이버 로그인</button>
             </div>
         </div>
     );

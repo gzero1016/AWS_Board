@@ -13,4 +13,6 @@ public class PrincipalReqDto {
     private String nickname;
     private Boolean enabled;
     private String profileUrl;
+    private String oauth2Id;
+    private String provider;
 }

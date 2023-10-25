@@ -12,4 +12,6 @@ public interface UserMapper {
     public Integer updateEnabledToEmail(String email);
     public Integer updateProfileImg(User user);
     public Integer updatePassword(User user);
+    public User findUserByOauth2Id(String oauth2Id);
+    public Integer updateOauth2IdAndProvider(User user);
 }

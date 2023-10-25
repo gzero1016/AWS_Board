@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.board.repository.BoardMapper">
+
+    <resultMap id="boardCategoryMap" type="com.korit.board.entity.BoardCategory">
+        <id property="boardCategoryId" column="board_category_id" />
+        <result property="boardCategoryName" column="board_category_name" />
+        <result property="boardCount" column="board_count" />
+    </resultMap>
+
+    <insert id="saveCategory" parameterType="com.korit.board.entity.BoardCategory"
+            useGeneratedKeys="true" keyProperty="boardCategoryId"> <!-- 객체의 아이디를 자동증가된 아이디로 받아옴 -->
+        insert into board_category_tb
+        values(0, #{boardCategoryName})
+    </insert>
+
+    <insert id="saveBoard">
+        insert into board_tb
+        values(0, #{boardTitle}, #{boardCategoryId}, #{boardContent}, #{email}, now())
+    </insert>
+
+    <select id="getBoardCategories" resultMap="boardCategoryMap">
+        SELECT
+            bct.board_category_id,
+            bct.board_category_name,
+            count(bt.board_category_id) as board_count
+        FROM
+            board_category_tb bct
+            left outer join board_tb bt on(bt.board_category_id = bct.board_category_id)
+        group by
+            bct.board_category_id,
+            bct.board_category_name
+        order by
+            bct.board_category_id;
+    </select>
+
+</mapper>

@@ -7,8 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-@Getter
 public class PrincipalUser implements UserDetails {
+
+    @Getter
     private User user;
 
     public PrincipalUser(User user) {
