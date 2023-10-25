@@ -14,6 +14,7 @@ function EditPassword(props) {
             ...passwordObj,
             [e.target.name]: e.target.value
         });
+        console.log(passwordObj);
     }
 
     const handleUpdatePasswordSubmit = async () => {
@@ -24,6 +25,7 @@ function EditPassword(props) {
                 }
             }
             await instance.put("/account/password", passwordObj, option);
+            alert("비밀번호가 변경되었습니다.");
         }catch(error){
             console.error(error)
         }

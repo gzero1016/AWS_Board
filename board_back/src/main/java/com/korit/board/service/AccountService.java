@@ -67,7 +67,7 @@ public class AccountService {
         }
 
         // 새로운 비밀번호와 재입력받은 비밀번호를 확인
-        if(Objects.equals(updatePasswordReqDto.getOldPassword(), updatePasswordReqDto.getCheckNewPassword())) {
+        if(!Objects.equals(updatePasswordReqDto.getOldPassword(), updatePasswordReqDto.getCheckNewPassword())) {
             throw new MismatchedPasswordException();
         }
 
