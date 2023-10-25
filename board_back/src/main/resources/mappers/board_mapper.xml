@@ -8,6 +8,7 @@
     <resultMap id="boardCategoryMap" type="com.korit.board.entity.BoardCategory">
         <id property="boardCategoryId" column="board_category_id" />
         <result property="boardCategoryName" column="board_category_name" />
+        <result property="boardCount" column="board_count" />
     </resultMap>
 
     <insert id="saveCategory" parameterType="com.korit.board.entity.BoardCategory"
@@ -22,11 +23,18 @@
     </insert>
 
     <select id="getBoardCategories" resultMap="boardCategoryMap">
-        select
-            board_category_id,
-            board_category_name
-        from
-            board_category_tb;
+        SELECT
+            bct.board_category_id,
+            bct.board_category_name,
+            count(bt.board_category_id) as board_count
+        FROM
+            board_category_tb bct
+            left outer join board_tb bt on(bt.board_category_id = bct.board_category_id)
+        group by
+            bct.board_category_id,
+            bct.board_category_name
+        order by
+            bct.board_category_id;
     </select>
 
 </mapper>

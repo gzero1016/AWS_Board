@@ -54,7 +54,7 @@ function BoardWrite(props) {
         // 로그인안된거
         if(!principal.data){
             alert("로그인 후 게시글을 작성하세요.");
-            window.location.replace("/");
+            window.location.replace("/auth/signin");
             return;
         }
 
@@ -79,6 +79,7 @@ function BoardWrite(props) {
             )
         })
     }, [])
+
 
     useEffect(() => {
         if(!!newCategory){

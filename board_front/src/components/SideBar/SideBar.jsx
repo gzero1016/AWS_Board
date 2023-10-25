@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQueryClient } from 'react-query';
+import { instance } from '../../api/config/instance';
 
 const layout = css`
     margin-right: 10px;
@@ -23,11 +24,17 @@ const container = css`
 `;
 
 function SideBar(props) {
+    const [ categories, setCategories ] = useState([]);
     const navigate = useNavigate();
-
     const queryClient = useQueryClient(); // queryClient 객체를 가져옴
-
     const principalState = queryClient.getQueryState("getPrincipal") 
+
+    useEffect(() => {
+        instance.get("/board/categories").then((response) => {
+                    setCategories(response.data)
+                }
+            )
+    }, [])
 
     const signinOnClick = () => {
         navigate("/auth/signin");
@@ -62,6 +69,15 @@ function SideBar(props) {
             <div>
                 <ul>
                     <Link to={"/board/write"}><li>글쓰기</li></Link>
+                    {/* 모든 categoryCount를 더하는거 */}
+                    <Link to={"/board/all/1"}><li>전체 게시글 ({categories.map(category => 
+                        category.boardCount).reduce((sum, curValue) => sum + curValue, 0)})</li></Link>
+                    {/* DB에 있는 categoryName을 사이드바에 펼치기 */}
+                    {categories.map(category => {
+                        return <Link key={category.boardCategoryId} to={`/board/${category.boardCategoryName}/1`}>
+                            <li>{category.boardCategoryName} ({category.boardCount})</li>
+                        </Link>
+                    })}
                 </ul>
             </div>
 

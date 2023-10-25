@@ -48,10 +48,10 @@ public class BoardService {
         }
         // 토큰에 있는 사용자 email 가져옴
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println(email);
         Board board = writeBoardReqDto.toBoardEntity(email);
 
         // 게시글을 DB에 저장
         return boardMapper.saveBoard(board) > 0;
     }
+
 }

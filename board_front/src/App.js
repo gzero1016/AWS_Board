@@ -7,6 +7,7 @@ import { instance } from './api/config/instance';
 import AuthRoute from './components/Routes/AuthRoute';
 import AccountRoute from './components/Routes/AccountRoute';
 import BoardWrite from './pages/BoardWrite/BoardWrite';
+import BoardList from './pages/BoardList/BoardList';
 
 function App() {
 
@@ -40,8 +41,7 @@ function App() {
         <Route path='/auth/*' element={ <AuthRoute /> } />
         <Route path='/account/*' element={ <AccountRoute /> } />
         <Route path='/board/write' element={ <BoardWrite /> } />
-        <Route path='/board/:category' element={<></>} />
-        <Route path='/board/:category/register' element={<></>} />
+        <Route path='/board/:category/:page' element={<BoardList/>} />
         <Route path='/board/:category/edit' element={<></>} />
       </Routes>
     </RootLayout>
