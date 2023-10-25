@@ -36,9 +36,6 @@ public class BoardController {
     @GetMapping("/boards/{categoryName}/{page}")
     public ResponseEntity<?> getBoardList(@PathVariable String categoryName, @PathVariable int page,
                                           SearchBoardListReqDto searchBoardListReqDto) {
-        System.out.println(searchBoardListReqDto);
-        System.out.println(categoryName);
-        System.out.println(page);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(boardService.getBoardList(categoryName, page, searchBoardListReqDto));
     }
 }

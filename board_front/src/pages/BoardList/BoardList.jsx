@@ -62,6 +62,13 @@ const SPageNumbers = css`
     }
 `;
 
+const pageNumber = css`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+`;
+
 function BoardList(props) {
 
     const { category, page } = useParams();
@@ -73,17 +80,14 @@ function BoardList(props) {
         {value: "작성자", label: "작성자"}
     ]
 
-    const [ boardList, setBoardList ] = useState([]);
-
-    const getBoardList = useQuery(["getBoardList", page], async () => {
+    const getBoardList = useQuery(["getBoardList", page, category], async () => {
         const option = {
             params: {
                 optionName: "",
                 searchValue: ""
             }
         }
-        return await instance.get(`/boards/${category}/${page}`, option).then(response =>{
-        });
+        return await instance.get(`/boards/${category}/${page}`, option)
     })
 
     return (
@@ -109,17 +113,20 @@ function BoardList(props) {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th>번호</th>
-                            <th>제목</th>
-                            <th>작성자</th>
-                            <th>작성일</th>
-                            <th>추천</th>
-                            <th>조회수</th>
-                        </tr>
+                        {!getBoardList.isLoading && getBoardList?.data.data.map(board => {
+                            return  <tr key={board.boardId}>
+                                        <td>{board.boardId}</td>
+                                        <td>{board.title}</td>
+                                        <td>{board.nickname}</td>
+                                        <td>{board.createDate}</td>
+                                        <td>{board.hitsCount}</td>
+                                        <td>{board.likeCount}</td>
+                                    </tr>
+                            
+                        })}
                     </tbody>
                 </table>
-                <div>
+                <div css={pageNumber}>
                     <ul css={SPageNumbers}>
                         <Link to={`/board/${category}/${parseInt(page) - 1}`}><li>&#60;</li></Link>
                         <Link to={`/board/${category}/${1}`}><li>1</li></Link>
