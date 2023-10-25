@@ -9,7 +9,18 @@
         <id property="boardCategoryId" column="board_category_id" />
         <result property="boardCategoryName" column="board_category_name" />
     </resultMap>
-    
+
+    <insert id="saveCategory" parameterType="com.korit.board.entity.BoardCategory"
+            useGeneratedKeys="true" keyProperty="boardCategoryId"> <!-- 객체의 아이디를 자동증가된 아이디로 받아옴 -->
+        insert into board_category_tb
+        values(0, #{boardCategoryName})
+    </insert>
+
+    <insert id="saveBoard">
+        insert into board_tb
+        values(0, #{boardTitle}, #{boardCategoryId}, #{boardContent}, #{email}, now())
+    </insert>
+
     <select id="getBoardCategories" resultMap="boardCategoryMap">
         select
             board_category_id,
