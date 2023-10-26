@@ -27,15 +27,18 @@ public class BoardController {
     @ArgsAop // 자동 print 찍어주는거
     @ValidAop // 널값확인
     @PostMapping("/board/content")
-    public ResponseEntity<?> writeBoard(@Valid  @RequestBody WriteBoardReqDto writeBoardReqDto,
-                                        BindingResult bindingResult){
+    public ResponseEntity<?> writeBoard(@Valid  @RequestBody WriteBoardReqDto writeBoardReqDto, BindingResult bindingResult){
         return ResponseEntity.ok(boardService.writeBoardContent(writeBoardReqDto));
     }
 
     @ArgsAop
     @GetMapping("/boards/{categoryName}/{page}")
-    public ResponseEntity<?> getBoardList(@PathVariable String categoryName, @PathVariable int page,
-                                          SearchBoardListReqDto searchBoardListReqDto) {
+    public ResponseEntity<?> getBoardList(@PathVariable String categoryName, @PathVariable int page, SearchBoardListReqDto searchBoardListReqDto) {
         return ResponseEntity.ok(boardService.getBoardList(categoryName, page, searchBoardListReqDto));
+    }
+
+    @GetMapping("/boards/{categoryName}/count")
+    public ResponseEntity<?> getBoardCount(@PathVariable String categoryName, SearchBoardListReqDto searchBoardListReqDto) {
+        return ResponseEntity.ok(boardService.getBoardCount(categoryName, searchBoardListReqDto));
     }
 }

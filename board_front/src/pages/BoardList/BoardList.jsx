@@ -42,23 +42,18 @@ const selectBox = css`
 
 const SPageNumbers = css`
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-top: 10px;
     width: 200px;
-    list-style-type: none;
 
-    & > a {
-        text-decoration: none;
-        color: black;
-    }
-
-    & li {
+    & button {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin: 3px;
         width: 20px;
         border: 1px solid #dbdbdb;
+        cursor: pointer;
     }
 `;
 
@@ -72,7 +67,6 @@ const pageNumber = css`
 function BoardList(props) {
     const navigate = useNavigate();
     const { category, page } = useParams();
-    console.log(category);
 
     const options = [
         {value: "전체", label: "전체"},
@@ -80,10 +74,8 @@ function BoardList(props) {
         {value: "작성자", label: "작성자"}
     ];
 
-    const [ selectedOption, setSelectedOption ] = useState(options[0]);
-
     const search = {
-        optionName: selectedOption.label,
+        optionName: options[0].label,
         searchValue: ""
     };
 
@@ -94,6 +86,17 @@ function BoardList(props) {
             params: searchParams
         }
         return await instance.get(`/boards/${category}/${page}`, option)
+    }, {
+        refetchOnWindowFocus: false
+    });
+
+    const getBoardCount = useQuery(["getBoardCount", page, category], async () => {
+        const option = {
+            params: searchParams
+        }
+        return await instance.get(`/boards/${category}/count`, option);
+    }, {
+        refetchOnWindowFocus: false
     });
 
     const handleSearchInputChange = (e) => {
@@ -113,7 +116,47 @@ function BoardList(props) {
     const handleSearchButtonClick = () => {
         navigate(`/board/${category}/1`);
         getBoardList.refetch();
+        getBoardCount.refetch();
     };
+
+    // getBoardCount.isLoading가 false면 getBoardCount.data.data 이걸실행한다.
+    // console.log(!getBoardCount.isLoading && getBoardCount.data.data);s
+
+    const pagination = () => {
+        if(getBoardCount.isLoading) {
+            return <></>
+        }
+
+        const totalBoardCount = getBoardCount.data.data;
+
+        const lastPage = totalBoardCount % 10 === 0 ? totalBoardCount / 10 : Math.floor(totalBoardCount / 10) + 1;
+
+        const startIndex = parseInt(page) % 5 === 0 ? parseInt(page) - 4 : parseInt(page) - (parseInt(page) % 5) + 1;
+        
+        const endIndex = startIndex + 4 <= lastPage? startIndex + 4 : lastPage;
+        
+        const pageNumbers = [];
+
+        for(let i = startIndex; i <= endIndex; i++) {
+            pageNumbers.push(i);
+        }
+
+        return (
+            <>
+                <button disabled={parseInt(page) === 1} onClick={() => {
+                    navigate(`/board/${category}/${parseInt(page) - 1}`);
+                }}>&#60;</button>
+                {pageNumbers.map(pageNumber =>{
+                    return <button key={pageNumber} onClick={() => {
+                        navigate(`/board/${category}/${pageNumber}`);
+                    }}>{pageNumber}</button>
+                })}
+                <button disabled={parseInt(page) === lastPage} onClick={() => {
+                    navigate(`/board/${category}/${parseInt(page) + 1}`);
+                }}>&#62;</button>
+            </>
+        )
+    }
 
     return (
         <RootContainer>
@@ -152,15 +195,9 @@ function BoardList(props) {
                     </tbody>
                 </table>
                 <div css={pageNumber}>
-                    <ul css={SPageNumbers}>
-                        <Link to={`/board/${category}/${parseInt(page) - 1}`}><li>&#60;</li></Link>
-                        <Link to={`/board/${category}/${1}`}><li>1</li></Link>
-                        <Link to={`/board/${category}/${2}`}><li>2</li></Link>
-                        <Link to={`/board/${category}/${3}`}><li>3</li></Link>
-                        <Link to={`/board/${category}/${4}`}><li>4</li></Link>
-                        <Link to={`/board/${category}/${5}`}><li>5</li></Link>
-                        <Link to={`/board/${category}/${parseInt(page) + 1}`}><li>&#62;</li></Link>
-                    </ul>
+                    <div css={SPageNumbers}>
+                        {pagination()}
+                    </div>
                 </div>
             </div>
         </RootContainer>

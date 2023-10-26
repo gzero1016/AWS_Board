@@ -13,4 +13,5 @@ public interface BoardMapper {
     public int saveCategory(BoardCategory boardCategory);
     public int saveBoard(Board board);
     public List<Board> getBoardList(Map<String, Object> paramsMap);
+    public int getBoardCount(Map<String, Object> paramsMap);
 }
