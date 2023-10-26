@@ -59,15 +59,16 @@ public class BoardService {
     }
 
     public List<BoardListRespDto> getBoardList(String categoryName, int page, SearchBoardListReqDto searchBoardListReqDto) {
-        int index = (page - 1) * 10;
+        int index = (page - 1) * 10; // 몇번부터 10개 보여줄건지
 
         Map<String, Object> paramsMap = new HashMap<>();
-
+        // 새로운 맵을 생성해서 아래 키와 값을 넣는다.
         paramsMap.put("index", index);
         paramsMap.put("categoryName", categoryName);
         paramsMap.put("optionName", searchBoardListReqDto.getOptionName());
         paramsMap.put("searchValue", searchBoardListReqDto.getSearchValue());
 
+        // BoardListRespDto List를 새로 생성해 위 맵을 매개변수로 넣어 hits 수와 like 수를 sum 한뒤 join으로 받아와 리스트에 옮겨담는다.
         List<BoardListRespDto> boardListRespDto = new ArrayList<>();
         System.out.println(boardMapper.getBoardList(paramsMap));
         boardMapper.getBoardList(paramsMap).forEach(board -> {

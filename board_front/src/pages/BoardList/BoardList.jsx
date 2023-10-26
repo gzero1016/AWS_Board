@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import RootContainer from '../../components/RootContainer/RootContainer';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
@@ -70,25 +70,50 @@ const pageNumber = css`
 `;
 
 function BoardList(props) {
-
+    const navigate = useNavigate();
     const { category, page } = useParams();
-    console.log(category)
+    console.log(category);
 
     const options = [
         {value: "전체", label: "전체"},
         {value: "제목", label: "제목"},
         {value: "작성자", label: "작성자"}
-    ]
+    ];
+
+    const [ selectedOption, setSelectedOption ] = useState(options[0]);
+
+    const search = {
+        optionName: selectedOption.label,
+        searchValue: ""
+    };
+
+    const [ searchParams, setSearchParams ] = useState(search);
 
     const getBoardList = useQuery(["getBoardList", page, category], async () => {
         const option = {
-            params: {
-                optionName: "",
-                searchValue: ""
-            }
+            params: searchParams
         }
         return await instance.get(`/boards/${category}/${page}`, option)
-    })
+    });
+
+    const handleSearchInputChange = (e) => {
+        setSearchParams({
+            ...searchParams,
+            searchValue: e.target.value
+        })
+    };
+
+    const handleSearchOptionSelect = (option) => {
+        setSearchParams({
+            ...searchParams,
+            optionName: option.label
+        })
+    };
+
+    const handleSearchButtonClick = () => {
+        navigate(`/board/${category}/1`);
+        getBoardList.refetch();
+    };
 
     return (
         <RootContainer>
@@ -96,10 +121,10 @@ function BoardList(props) {
                 <h1>{category === "all" ? "전체 게시글" : category}</h1>
                 <div css={searchContainer}>
                     <div css={selectBox}>
-                        <ReactSelect options={options} defaultValue={options[0]}/>
+                        <ReactSelect options={options} defaultValue={options[0]} onChange={handleSearchOptionSelect} />
                     </div>
-                    <input type="text" placeholder='search...'/>
-                    <button>검색</button>
+                    <input type="text" placeholder='search...' onChange={handleSearchInputChange} />
+                    <button onClick={handleSearchButtonClick}>검색</button>
                 </div>
                 <table css={table}>
                     <thead>
@@ -119,8 +144,8 @@ function BoardList(props) {
                                         <td>{board.title}</td>
                                         <td>{board.nickname}</td>
                                         <td>{board.createDate}</td>
-                                        <td>{board.hitsCount}</td>
                                         <td>{board.likeCount}</td>
+                                        <td>{board.hitsCount}</td>
                                     </tr>
                             
                         })}

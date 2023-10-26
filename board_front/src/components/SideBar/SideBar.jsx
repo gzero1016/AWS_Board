@@ -72,9 +72,11 @@ function SideBar(props) {
                     {/* 모든 categoryCount를 더하는거 */}
                     <Link to={"/board/all/1"}><li>전체 게시글 ({categories.map(category => 
                         category.boardCount).reduce((sum, curValue) => sum + curValue, 0)})</li></Link>
-                    {/* DB에 있는 categoryName을 사이드바에 펼치기 */}
-                    {categories.map(category => {
-                        return <Link key={category.boardCategoryId} to={`/board/${category.boardCategoryName}/1`}>
+                    {categories.map(category => { {/* DB에 있는 categoryName을 사이드바에 펼치기 */}
+                        return <Link 
+                                    key={category.boardCategoryId} 
+                                    to={`/board/${category.boardCategoryName}/1`}
+                                    reloadDocument={true}>
                             <li>{category.boardCategoryName} ({category.boardCount})</li>
                         </Link>
                     })}

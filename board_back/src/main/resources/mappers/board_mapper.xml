@@ -59,21 +59,21 @@
             blt.board_like_count
         from
             board_tb bt
-        left outer join user_tb ut on(ut.email = bt.email)
-        left outer join (select
-                            board_id,
-                            count(*) as board_hits_count
-                        from
-                            board_hits_tb
-                        group by
-                            board_id) bht on(bht.board_id = bt.board_id)
-        left outer join (select
-                            board_id,
-                            count(*) as board_like_count
-                        from
-                            board_like_tb
-                        group by
-                            board_id) blt on(blt.board_id = bt.board_id)
+            left outer join user_tb ut on(ut.email = bt.email)
+            left outer join (select
+                                board_id,
+                                count(*) as board_hits_count
+                            from
+                                board_hits_tb
+                            group by
+                                board_id) bht on(bht.board_id = bt.board_id)
+            left outer join (select
+                                board_id,
+                                count(*) as board_like_count
+                            from
+                                board_like_tb
+                            group by
+                                board_id) blt on(blt.board_id = bt.board_id)
         where
             1 = 1
             <if test="!categoryName.equals('all')">
