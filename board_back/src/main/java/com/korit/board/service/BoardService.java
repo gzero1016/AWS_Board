@@ -1,9 +1,6 @@
 package com.korit.board.service;
 
-import com.korit.board.dto.BoardCategoryRespDto;
-import com.korit.board.dto.BoardListRespDto;
-import com.korit.board.dto.SearchBoardListReqDto;
-import com.korit.board.dto.WriteBoardReqDto;
+import com.korit.board.dto.*;
 import com.korit.board.entity.Board;
 import com.korit.board.entity.BoardCategory;
 import com.korit.board.repository.BoardMapper;
@@ -85,7 +82,39 @@ public class BoardService {
         paramsMap.put("optionName", searchBoardListReqDto.getOptionName());
         paramsMap.put("searchValue", searchBoardListReqDto.getSearchValue());
 
+        // 전체 Board의 개수를 가져옴
         return boardMapper.getBoardCount(paramsMap);
+    }
+
+    public GetBoardRespDto getBoardByBoardId(int boardId) {
+        return boardMapper.getBoardByBoardId(boardId).toBoardDto();
+    }
+
+    public boolean getLikeState(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return boardMapper.getLikeState(paramsMap) > 0;
+    }
+
+    public boolean setlLike(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return boardMapper.insertLikeState(paramsMap) > 0;
+    }
+
+    public boolean cancelLike(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        return boardMapper.deleteLike(paramsMap) > 0;
     }
 
 }

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import RootContainer from '../../components/RootContainer/RootContainer';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import ReactSelect from 'react-select';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import { instance } from '../../api/config/instance';
 import { useQuery } from 'react-query';
@@ -62,6 +61,14 @@ const pageNumber = css`
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+`;
+
+const SBoardTitle = css`
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
 `;
 
 function BoardList(props) {
@@ -129,6 +136,7 @@ function BoardList(props) {
 
         const totalBoardCount = getBoardCount.data.data;
 
+        // 몊번째 페이지까지 나오는지
         const lastPage = totalBoardCount % 10 === 0 ? totalBoardCount / 10 : Math.floor(totalBoardCount / 10) + 1;
 
         const startIndex = parseInt(page) % 5 === 0 ? parseInt(page) - 4 : parseInt(page) - (parseInt(page) % 5) + 1;
@@ -182,9 +190,9 @@ function BoardList(props) {
                     </thead>
                     <tbody>
                         {!getBoardList.isLoading && getBoardList?.data.data.map(board => {
-                            return  <tr key={board.boardId}>
+                            return  <tr key={board.boardId} onClick={() => {navigate(`/board/${board.boardId}`)}}>
                                         <td>{board.boardId}</td>
-                                        <td>{board.title}</td>
+                                        <td css={SBoardTitle}>{board.title}</td>
                                         <td>{board.nickname}</td>
                                         <td>{board.createDate}</td>
                                         <td>{board.likeCount}</td>

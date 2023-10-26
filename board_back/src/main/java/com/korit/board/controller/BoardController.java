@@ -20,7 +20,6 @@ public class BoardController {
 
     @GetMapping("/board/categories")
     public ResponseEntity<?> getCategories() {
-
         return ResponseEntity.ok(boardService.getBoardCategoriesAll());
     }
 
@@ -31,14 +30,41 @@ public class BoardController {
         return ResponseEntity.ok(boardService.writeBoardContent(writeBoardReqDto));
     }
 
+    // PathVariable: 값추출
     @ArgsAop
     @GetMapping("/boards/{categoryName}/{page}")
     public ResponseEntity<?> getBoardList(@PathVariable String categoryName, @PathVariable int page, SearchBoardListReqDto searchBoardListReqDto) {
         return ResponseEntity.ok(boardService.getBoardList(categoryName, page, searchBoardListReqDto));
     }
 
+    // PathVariable: 값추출
     @GetMapping("/boards/{categoryName}/count")
     public ResponseEntity<?> getBoardCount(@PathVariable String categoryName, SearchBoardListReqDto searchBoardListReqDto) {
         return ResponseEntity.ok(boardService.getBoardCount(categoryName, searchBoardListReqDto));
     }
+
+    // PathVariable: 값추출
+    @GetMapping("/board/{boardId}")
+    public ResponseEntity<?> getBoard(@PathVariable int boardId){
+        return ResponseEntity.ok(boardService.getBoardByBoardId(boardId));
+    }
+
+    @GetMapping("/board/like/{boardId}")
+    public ResponseEntity<?> getLikeState(@PathVariable int boardId) {
+
+        return ResponseEntity.ok(boardService.getLikeState(boardId));
+    }
+
+    @PostMapping("/board/like/{boardId}")
+    public ResponseEntity<?> setLikeState(@PathVariable int boardId) {
+
+        return ResponseEntity.ok(boardService.setlLike(boardId));
+    }
+
+    @DeleteMapping("/board/like/{boardId}")
+    public ResponseEntity<?> cancelLike(@PathVariable int boardId) {
+
+        return ResponseEntity.ok(boardService.cancelLike(boardId));
+    }
+
 }
