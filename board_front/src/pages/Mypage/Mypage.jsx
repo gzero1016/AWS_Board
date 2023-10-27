@@ -67,6 +67,15 @@ const file = css`
 
 const pointBox = css`
 
+    & p {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    & b {
+        font-size: 18px;
+    }
+
     & button {
         background-color: #eee;
         border: 2px solid #eee;
@@ -196,7 +205,7 @@ function Mypage(props) {
                         }
                     </div>
                     <div css={pointBox}>
-                        <h3>누적 포인트: 0원</h3><button onClick={() => {navigete("/store/products")}}>포인트 구매</button>
+                        <p>누적 포인트: <b>{principal.userPoint}</b> 원</p><button onClick={() => {navigete("/store/products")}}>포인트 구매</button>
                     </div>
                 </div>
                 <div css={textBox}>

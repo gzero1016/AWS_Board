@@ -2,9 +2,10 @@ import React from 'react';
 import RootContainer from '../../components/RootContainer/RootContainer';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { instance } from '../../api/config/instance';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SStoreContainer = css`
     display: flex;
@@ -31,7 +32,10 @@ const SStoreContainer = css`
     }
 `;
 
-function Store(props) {
+function PointStore(props) {
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
+
     const getProducts = useQuery(["getProducts"], async () => {
         try {
             const option = {
@@ -45,8 +49,6 @@ function Store(props) {
         }
     });
 
-    console.log(getProducts?.data?.data)
-
     // iamport api 사용
     useEffect(() => {
         const iamport = document.createElement("script");
@@ -57,16 +59,58 @@ function Store(props) {
         }
     }, []);
 
+    const handlePaymentSubmit = (product) => {
+        const principal = queryClient.getQueryState("getPrincipal");
+        if(!window.IMP) {
+            return;
+        }
+        const { IMP } = window;
+        IMP.init("imp55744845");
+
+        const paymentData = {
+            pg: "kakaopay",
+            pay_method: "kakaopay",
+            merchant_uid: `mid_${new Date().getTime()}`,
+            amount: product.productPrice,
+            name: product.productName,
+            buyer_name: principal?.data?.data?.name,
+            buyer_email: principal?.data?.data?.email
+        }
+
+        IMP.request_pay(paymentData, (response) => {
+            const { success, error_msg } = response;
+
+            if(success) {
+                const orderData = {
+                    productId: product.productId,
+                    email: principal?.data?.data?.email
+                }
+                const option = {
+                    headers: {
+                        Authorization: localStorage.getItem("accessToken")
+                    }
+                }
+                instance.post("/order", orderData, option).then((response) => {
+                    alert("포인트 충전이 완료되었습니다.");
+                    queryClient.refetchQueries(["getProducts"]);
+                    navigate("/account/mypage");
+                });
+            } else {
+                alert(error_msg);
+            }
+        });
+    }
+
     return (
         <RootContainer>
             <h1>포인트 충전하기</h1>
             <div css={SStoreContainer}>
                 {!getProducts.isLoading && getProducts?.data?.data.map(product => {
-                    return <button key={product.productId}>{product.productName} Point</button>
+                    return <button key={product.productId} onClick={() => {handlePaymentSubmit(product);}}>{product.productName} Point</button>
                 })}
             </div>
         </RootContainer>
     );
 }
 
-export default Store;
+export default PointStore;

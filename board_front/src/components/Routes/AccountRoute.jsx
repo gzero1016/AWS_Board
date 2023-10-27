@@ -3,7 +3,7 @@ import { useQueryClient } from 'react-query';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Mypage from '../../pages/Mypage/Mypage';
 import EditPassword from '../../pages/EditPassword/EditPassword';
-import Store from '../../pages/Store/Store';
+import Store from '../../pages/Store/PointStore';
 
 function AccountRoute(props) {
 
