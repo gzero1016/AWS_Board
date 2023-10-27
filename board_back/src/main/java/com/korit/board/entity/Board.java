@@ -19,6 +19,7 @@ public class Board {
     private int boardId;
     private String boardTitle;
     private int boardCategoryId;
+    private String boardCategoryName;
     private String boardContent;
     private String email;
     private LocalDateTime createDate;
@@ -44,6 +45,7 @@ public class Board {
                 .boardTitle(boardTitle)
                 .boardContent(boardContent)
                 .boardCategoryId(boardCategoryId)
+                .boardCategoryName(boardCategoryName)
                 .email(email)
                 .nickname(nickname)
                 .createDate(createDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)))

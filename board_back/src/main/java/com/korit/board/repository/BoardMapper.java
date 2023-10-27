@@ -2,6 +2,7 @@ package com.korit.board.repository;
 
 import com.korit.board.entity.Board;
 import com.korit.board.entity.BoardCategory;
+import com.korit.board.entity.UserPoint;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface BoardMapper {
     public int getLikeState(Map<String, Object> paramsMap);
     public int insertLikeState(Map<String, Object> paramsMap);
     public int deleteLike(Map<String, Object> paramsMap);
+    public int deleteBoard(int boardId);
+    public int updateBoard(Board board);
+    public int usePoint(UserPoint userPoint);
 }

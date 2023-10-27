@@ -117,4 +117,16 @@ public class BoardService {
         return boardMapper.deleteLike(paramsMap) > 0;
     }
 
+    public boolean deleteBoard(int boardId) {
+        return boardMapper.deleteBoard(boardId) > 0;
+    }
+
+    public boolean updateBoard(UpdateBoardReqDto updateBoardReqDto){
+        return boardMapper.updateBoard(updateBoardReqDto.toBoardEntity()) > 0;
+    }
+
+    public boolean usePoint(UserPointReqDto userPointReqDto) {
+        return boardMapper.usePoint(userPointReqDto.toUserPoint()) > 0;
+    }
+
 }

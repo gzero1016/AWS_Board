@@ -106,7 +106,18 @@
             ut.profile_url,
             ut.oauth2_id,
             ut.provider,
-            sum(pht.point_history_price) as user_point
+            ifnull(
+                (select sum(point_history_price)
+                from point_history_tb
+                where email = #{email}
+                and point_history_type = 1), 0
+            ) -
+            ifnull(
+                (select sum(point_history_price)
+                from point_history_tb
+                where email = #{email}
+                and point_history_type = 0), 0
+            ) as user_point
         from
             user_tb ut
             left outer join point_history_tb pht on(pht.email = ut.email)

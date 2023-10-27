@@ -15,6 +15,7 @@
         <id property="boardId" column="board_id" />
         <result property="boardTitle" column="board_title" />
         <result property="boardCategoryId" column="board_category_id" />
+        <result property="boardCategoryName" column="board_category_name" />
         <result property="boardContent" column="board_content" />
         <result property="email" column="email" />
         <result property="nickname" column="nickname" />
@@ -33,6 +34,16 @@
         insert into board_tb
         values(0, #{boardTitle}, #{boardCategoryId}, #{boardContent}, #{email}, now())
     </insert>
+
+    <update id="updateBoard">
+        update board_tb
+        set
+            board_title = #{boardTitle},
+            board_category_id = #{boardCategoryId},
+            board_content = #{boardContent}
+        where
+            board_id = #{boardId}
+    </update>
 
     <select id="getBoardCategories" resultMap="boardCategoryMap">
         SELECT
@@ -145,6 +156,7 @@
             bt.board_id,
             bt.board_title,
             bt.board_category_id,
+            bct.board_category_name,
             bt.board_content,
             bt.email,
             ut.nickname,
@@ -154,6 +166,7 @@
         from
             board_tb bt
             left outer join user_tb ut on(ut.email = bt.email)
+            left outer join board_category_tb bct on (bct.board_category_id = bt.board_category_id)
             left outer join (select
                                 board_id,
                                 count(*) as board_hits_count
@@ -187,12 +200,24 @@
         values(0, #{boardId}, #{email})
     </insert>
 
+    <insert id="usePoint">
+        insert into point_history_tb
+        values(0, 0, #{point}, #{email}, now())
+    </insert>
+
     <delete id="deleteLike" parameterType="hashmap">
         delete
         from board_like_tb
         where
             board_id = #{boardId}
         and email = #{email}
+    </delete>
+
+    <delete id="deleteBoard">
+        delete
+        from board_tb
+        where
+            board_id = #{boardId}
     </delete>
 
 </mapper>

@@ -2,10 +2,11 @@ import React from 'react';
 import RootContainer from '../../components/RootContainer/RootContainer';
 import { useQuery, useQueryClient } from 'react-query';
 import { instance } from '../../api/config/instance';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 
 const BoardContainer = css`
     position: relative;
@@ -83,18 +84,32 @@ const ContentContainer = css`
     }
 `;
 
-function BoardDetails(props) {
+const EditBox = css`
+    display: flex;
+    justify-content: flex-end;
 
+    & button {
+        margin: 10px 2px;
+        border: 2px solid #eee;
+        border-radius: 5px;
+        background-color: #eee;
+        cursor: pointer;
+    }
+`;
+
+function BoardDetails(props) {
+    const navigete = useNavigate();
     const queryClient = useQueryClient();
     const principal = queryClient.getQueryState("getPrincipal");
-
+    const [ isEditButtonDisabled, setIsEditButtonDisabled ] = useState(true);
+    const [ isDeleteButtonDisabled, setIsDeleteButtonDisabled ] = useState(true);
     const { boardId } = useParams();
     const [ board, setBoard ] = useState({});
+    const [ likeCount, setLikeCount ] = useState(board.boardLikeCount);
     const getBoard = useQuery(["getBoard"], async () => {
         try {
             return await instance.get(`/board/${boardId}`);
         }catch(error) {
-
         }
     }, {
         refetchOnWindowFocus: false,
@@ -118,6 +133,14 @@ function BoardDetails(props) {
         refetchOnWindowFocus: false,
         retry: 0
     });
+
+    useEffect(() => {
+        if (principal?.data?.data?.email === board.email) {
+            setIsEditButtonDisabled(false);
+            setIsDeleteButtonDisabled(false);
+        } else {
+        }
+    }, [board]);
     
     if(getBoard.isLoading) {
         return <></>
@@ -136,9 +159,31 @@ function BoardDetails(props) {
                 await instance.post(`/board/like/${boardId}`, {}, option);
             }
             getLikeState.refetch();
+            getBoard.refetch();
         }catch(error) {
             console.error(error);
         }
+    }
+
+    const handleDeleteButtonClick = async () => {
+        if (window.confirm("정말로 삭제 하시겠습니까?")) {
+            try {
+                if (board.email === principal?.data?.data?.email) {
+                    await instance.delete(`/board/delete/${boardId}`)
+                        alert("삭제완료!");
+                        navigete("/board/all/1");
+                } else {
+                    alert("작성자만 삭제할 수 있습니다.");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+    
+    const handleEditButtonClick = () => {
+        navigete(`/board/${boardId}/edit`);
+        console.log(board);
     }
 
     return (
@@ -161,6 +206,10 @@ function BoardDetails(props) {
                 </div>
                 <div css={Line}></div>
                 <div css={ContentContainer} dangerouslySetInnerHTML={{__html: board.boardContent}}></div>
+                <div css={EditBox}>
+                    <button onClick={handleEditButtonClick} disabled={isEditButtonDisabled}>수정</button>
+                    <button onClick={handleDeleteButtonClick} disabled={isDeleteButtonDisabled}>삭제</button>
+                </div>
             </div>
         </RootContainer>
     );

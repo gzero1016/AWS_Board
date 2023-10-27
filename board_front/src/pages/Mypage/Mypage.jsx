@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import RootContainer from '../../components/RootContainer/RootContainer';
-import { useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { instance } from '../../api/config/instance';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
@@ -99,10 +99,31 @@ function Mypage(props) {
     const [ profileImgSrc, setProfileImgSrc ] = useState("");
     const [ progressPercent, setProgressPercent ] = useState(0);
     const navigete = useNavigate();
+    const getPrincipal = useQuery(["getPrincipal"], async () => {
+    try {
+        const option = {
+        headers: {
+            Authorization: localStorage.getItem("accessToken")
+        }
+        }
+      return await instance.get("/account/principal", option); // 리턴을 안걸어주면 데이터 안들어감
+
+    } catch(error) {
+        throw new Error(error)
+    }
+    }, {
+    retry: 0, // 요청반복횟수
+    refetchInterval: 1000 * 60 * 10, // 10분마다 토큰을 자동으로 요청보내서 유효하면 user정보를 가져오게함
+    refetchOnWindowFocus: false // 포커스 움직일때마다 useQuery 랜더링 끄기
+    });
 
     useEffect(() => {
         setProfileImgSrc(principal.profileUrl);
     }, [])
+
+    if(getPrincipal.isLoading){
+        return <></>
+    }
 
     const handleProfileUploadClick = () => {
         if(window.confirm("프로필 사진을 변경하시겠습니까?")) {

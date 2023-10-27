@@ -2,6 +2,8 @@ package com.korit.board.controller;
 
 import com.korit.board.aop.annotation.ArgsAop;
 import com.korit.board.aop.annotation.ValidAop;
+import com.korit.board.dto.UpdateBoardReqDto;
+import com.korit.board.dto.UserPointReqDto;
 import com.korit.board.dto.SearchBoardListReqDto;
 import com.korit.board.dto.WriteBoardReqDto;
 import com.korit.board.service.BoardService;
@@ -17,6 +19,7 @@ import javax.validation.Valid;
 public class BoardController {
 
     private final BoardService boardService;
+    private final UserPointService userPointService;
 
     @GetMapping("/board/categories")
     public ResponseEntity<?> getCategories() {
@@ -65,6 +68,23 @@ public class BoardController {
     public ResponseEntity<?> cancelLike(@PathVariable int boardId) {
 
         return ResponseEntity.ok(boardService.cancelLike(boardId));
+    }
+
+    @DeleteMapping("/board/delete/{boardId}")
+    public ResponseEntity<?> deleteBoard(@PathVariable int boardId) {
+        return ResponseEntity.ok(boardService.deleteBoard(boardId));
+    }
+
+    @PostMapping("board/content/point")
+    public ResponseEntity<?> usePoint(@RequestBody UserPointReqDto userPointReqDto) {
+        System.out.println(userPointReqDto);
+        return ResponseEntity.ok(userPointService.usePoint(userPointReqDto));
+    }
+
+    @PutMapping("/board/{boardId}/edit")
+    public ResponseEntity<?> updateBoardPoint(@RequestBody UpdateBoardReqDto updateBoardReqDto) {
+        System.out.println(updateBoardReqDto);
+        return ResponseEntity.ok(boardService.updateBoard(updateBoardReqDto));
     }
 
 }

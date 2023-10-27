@@ -2,6 +2,7 @@ package com.korit.board.repository;
 
 import com.korit.board.dto.UpdateProfileImgReqDto;
 import com.korit.board.entity.User;
+import com.korit.board.entity.UserPoint;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

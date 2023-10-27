@@ -10,6 +10,7 @@ import BoardWrite from './pages/BoardWrite/BoardWrite';
 import BoardList from './pages/BoardList/BoardList';
 import BoardDetails from './pages/BoardDetails/BoardDetails';
 import PointStore from './pages/Store/PointStore';
+import EditBoardDetails from './pages/EditBoardDetails/EditBoardDetails';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
         <Route path='/board/write' element={ <BoardWrite /> } />
         <Route path='/board/:category/:page' element={<BoardList/>} />
         <Route path='/board/:boardId' element={<BoardDetails/>} />
+        <Route path='/board/:boardId/edit' element={<EditBoardDetails/>} />
         <Route path='/store/products' element={<PointStore/>} />
       </Routes>
     </RootLayout>
