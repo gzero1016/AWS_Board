@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import ReactSelect from 'react-select';
 import { useState } from 'react';
 import { instance } from '../../api/config/instance';
-import { useQuery } from 'react-query';
+import { QueryClient, useQuery, useQueryClient } from 'react-query';
 
 const table = css`
     width: 100%;
@@ -64,7 +64,7 @@ const pageNumber = css`
 `;
 
 const SBoardTitle = css`
-    max-width: 500px;
+    max-width: 400px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

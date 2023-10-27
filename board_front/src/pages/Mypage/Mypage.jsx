@@ -4,10 +4,10 @@ import { useQueryClient } from 'react-query';
 import { instance } from '../../api/config/instance';
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { ref, getDownloadURL, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../api/firebase/firebase";
 import { Line } from 'rc-progress';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const infoHeader = css`
     display: flex;
@@ -46,19 +46,39 @@ const btBox = css`
 
 const textBox = css`
     margin: 0px 14px;
+    font-size: 15px;
 
     & div {
-        margin-top: 3px;
+        margin-bottom: 3px;
         font-weight: 600;
     }
 
     & button {
         margin-left: 5px;
+        border: none;
+        background-color: #eee;
+        border-radius: 3px;
     }
 `;
 
 const file = css`
     display: none;
+`;
+
+const pointBox = css`
+
+    & button {
+        background-color: #eee;
+        border: 2px solid #eee;
+        border-radius: 3px;
+        font-size: 12px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #fff;
+        }
+    }
+
 `;
 
 function Mypage(props) {
@@ -69,6 +89,7 @@ function Mypage(props) {
     const [ uploadFiles, setUploadFiles ] = useState([]);
     const [ profileImgSrc, setProfileImgSrc ] = useState("");
     const [ progressPercent, setProgressPercent ] = useState(0);
+    const navigete = useNavigate();
 
     useEffect(() => {
         setProfileImgSrc(principal.profileUrl);
@@ -174,8 +195,8 @@ function Mypage(props) {
                             </div>
                         }
                     </div>
-                    <div>
-                        누적 포인트: 0원
+                    <div css={pointBox}>
+                        <h3>누적 포인트: 0원</h3><button onClick={() => {navigete("/store/products")}}>포인트 구매</button>
                     </div>
                 </div>
                 <div css={textBox}>

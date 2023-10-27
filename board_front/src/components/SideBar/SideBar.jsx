@@ -8,6 +8,12 @@ import { instance } from '../../api/config/instance';
 const layout = css`
     margin-right: 10px;
     width: 320px;
+
+    & a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+    }
 `;
 
 const container = css`
@@ -19,7 +25,26 @@ const container = css`
     padding: 20px;
 
     & button {
-        margin-bottom: 5px;
+        margin-bottom: 7px;
+        height: 25px;
+        border: none;
+        border-radius: 5px;
+        background-color: #eee;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #fff;
+            border: 2px solid #eee;
+        }
+    }
+
+    & p {
+        font-size: 14px;
+    }
+
+    & b {
+        font-size: 20px;
+        margin-right: 5px;
     }
 `;
 
@@ -50,7 +75,7 @@ function SideBar(props) {
         <div css={layout}>
             {!!principalState?.data?.data ? ( 
                 <div css={container}>
-                    <h3>{principalState.data.data.nickname}님 환영합니다.</h3>
+                    <p><b>{principalState.data.data.nickname}</b>님 환영합니다.</p>
                     <div><button onClick={LogoutOnClick}>로그아웃</button></div>
                     <div>
                         <Link to={"/account/mypage"}>마이페이지</Link>

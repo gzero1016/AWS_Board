@@ -11,6 +11,7 @@ const layout = css`
 
     & > input {
         margin-bottom: 5px;
+        height: 25px;
     }
 `;
 
@@ -21,6 +22,16 @@ const buttonBox = css`
         align-items: center;
         margin-bottom: 5px;
         width: 173px;
+        height: 25px;
+        border: none;
+        border-radius: 5px;
+        background-color: #eee;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #fff;
+            border: 2px solid #eee;
+        }
     }
 `;
 

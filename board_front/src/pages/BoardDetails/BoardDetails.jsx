@@ -58,7 +58,6 @@ const SCheckButton = css`
     width: 50px;
     height: 50px;
     background-color: transparent;
-    cursor: pointer;
 
     & div {
         margin-top: 5px;
@@ -141,8 +140,6 @@ function BoardDetails(props) {
             console.error(error);
         }
     }
-    
-    console.log(board);
 
     return (
         <RootContainer>
@@ -154,11 +151,11 @@ function BoardDetails(props) {
                         {!getLikeState.isLoading &&
                         <button css={SLikeButton(getLikeState?.data?.data)} disabled={!principal?.data?.data} onClick={handleLikeButtonClick}>
                             <div>❤️</div>
-                            <div>10</div>
+                            <div>{board.boardLikeCount}</div>
                         </button>}
                         <button css={SCheckButton} disabled={!principal?.data?.data}>
                             <div>👀</div>
-                            <div>200</div>
+                            <div>{board.boardHitsCount}</div>
                         </button>
                     </div>
                 </div>

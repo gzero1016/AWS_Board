@@ -148,8 +148,8 @@ function BoardWrite(props) {
                 }
             }
             await instance.post("/board/content", boardContent, option);
-            console.log(boardContent, option)
             alert("게시물 작성이 완료되었습니다.");
+            window.location.replace("/board/all/1");
         }catch(error){
             console.log(error);
         }

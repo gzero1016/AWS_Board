@@ -19,6 +19,16 @@ const buttonBox = css`
     & > button {
         margin-right: 1.5px;
         width: 85px;
+        height: 25px;
+        border: none;
+        border-radius: 5px;
+        background-color: #eee;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #fff;
+            border: 2px solid #eee;
+        }
     }
 `;
 
