@@ -75,7 +75,6 @@ function EditBoardDetails(props) {
     const [ selectedOption, setSelectedOption ] = useState(selectOptions[0]);
     const { boardId } = useParams();
     const queryClient = useQueryClient();
-    const principalState = queryClient.getQueryState("getPrincipal");
     const [ board, setBoard ] = useState({});
     const getBoard = useQuery(["getBoard"], async () => {
         try {

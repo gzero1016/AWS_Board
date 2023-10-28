@@ -19,7 +19,6 @@ import javax.validation.Valid;
 public class BoardController {
 
     private final BoardService boardService;
-    private final UserPointService userPointService;
 
     @GetMapping("/board/categories")
     public ResponseEntity<?> getCategories() {
@@ -54,20 +53,32 @@ public class BoardController {
 
     @GetMapping("/board/like/{boardId}")
     public ResponseEntity<?> getLikeState(@PathVariable int boardId) {
-
         return ResponseEntity.ok(boardService.getLikeState(boardId));
     }
 
     @PostMapping("/board/like/{boardId}")
     public ResponseEntity<?> setLikeState(@PathVariable int boardId) {
-
         return ResponseEntity.ok(boardService.setlLike(boardId));
     }
 
     @DeleteMapping("/board/like/{boardId}")
     public ResponseEntity<?> cancelLike(@PathVariable int boardId) {
-
         return ResponseEntity.ok(boardService.cancelLike(boardId));
+    }
+
+    @GetMapping("/board/all/hits/{boardId}")
+    public ResponseEntity<?> getHitsState(@PathVariable int boardId) {
+        return ResponseEntity.ok(boardService.getHitsState(boardId));
+    }
+
+    @GetMapping("/board/hits/{boardId}")
+    public ResponseEntity<?> checkHitsAndEmail(@PathVariable int boardId) {
+        return ResponseEntity.ok(boardService.CheckHitsAndEmail(boardId));
+    }
+
+    @PostMapping("/board/hits/{boardId}")
+    public ResponseEntity<?> saveHitsState(@PathVariable int boardId) {
+        return ResponseEntity.ok(boardService.saveHits(boardId));
     }
 
     @DeleteMapping("/board/delete/{boardId}")
@@ -78,7 +89,7 @@ public class BoardController {
     @PostMapping("board/content/point")
     public ResponseEntity<?> usePoint(@RequestBody UserPointReqDto userPointReqDto) {
         System.out.println(userPointReqDto);
-        return ResponseEntity.ok(userPointService.usePoint(userPointReqDto));
+        return ResponseEntity.ok(boardService.usePoint(userPointReqDto));
     }
 
     @PutMapping("/board/{boardId}/edit")

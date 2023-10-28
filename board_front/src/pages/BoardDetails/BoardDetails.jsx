@@ -105,7 +105,6 @@ function BoardDetails(props) {
     const [ isDeleteButtonDisabled, setIsDeleteButtonDisabled ] = useState(true);
     const { boardId } = useParams();
     const [ board, setBoard ] = useState({});
-    const [ likeCount, setLikeCount ] = useState(board.boardLikeCount);
     const getBoard = useQuery(["getBoard"], async () => {
         try {
             return await instance.get(`/board/${boardId}`);
@@ -117,6 +116,45 @@ function BoardDetails(props) {
             setBoard(response.data);
         }
     });
+
+    const getViewsState = useQuery(["getHitsState", boardId], async () => {
+        try {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            return await instance.get(`/board/all/hits/${boardId}`, option);
+        }catch(error) {
+            console.error(error);
+        }
+    }, {
+        refetchOnWindowFocus: false,
+        retry: 0
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const option = {
+                headers: {
+                    Authorization: localStorage.getItem("accessToken")
+                }
+            }
+            try {
+                const response = await instance.get(`/board/hits/${boardId}`, option);
+                if(!response.data) {
+                    console.log(option);
+                    await instance.post(`/board/hits/${boardId}`,{}, option);
+                    getViewsState.refetch();
+                    getBoard.refetch();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchData();
+    }, []);
+    
 
     const getLikeState = useQuery(["getLikeState", boardId], async () => {
         try {
@@ -198,10 +236,11 @@ function BoardDetails(props) {
                             <div>❤️</div>
                             <div>{board.boardLikeCount}</div>
                         </button>}
+                        {!getViewsState.isLoading &&
                         <button css={SCheckButton} disabled={!principal?.data?.data}>
                             <div>👀</div>
                             <div>{board.boardHitsCount}</div>
-                        </button>
+                        </button>}
                     </div>
                 </div>
                 <div css={Line}></div>

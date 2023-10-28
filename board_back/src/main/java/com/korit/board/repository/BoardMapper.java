@@ -22,4 +22,7 @@ public interface BoardMapper {
     public int deleteBoard(int boardId);
     public int updateBoard(Board board);
     public int usePoint(UserPoint userPoint);
+    public int getHitsState(int boardId);
+    public int CheckHitsAndEmail(Map<String, Object> paramsMap);
+    public int saveHitsState(Map<String, Object> paramsMap);
 }

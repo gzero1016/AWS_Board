@@ -195,6 +195,26 @@
         and email = #{email}
     </select>
 
+    <select id="getHitsState" resultType="java.lang.Integer">
+        select
+            count(*)
+        from
+            board_hits_tb
+        where
+            board_id = #{boardId}
+    </select>
+
+    <select id="CheckHitsAndEmail" parameterType="hashmap" resultType="java.lang.Integer">
+        select coalesce(
+            (select
+                count(*)
+            from
+                board_hits_tb
+            where
+                email = #{email}
+            and board_id = #{boardId}), 0) as hitsCount
+    </select>
+
     <insert id="insertLikeState" parameterType="hashmap">
         insert into board_like_tb
         values(0, #{boardId}, #{email})
@@ -203,6 +223,11 @@
     <insert id="usePoint">
         insert into point_history_tb
         values(0, 0, #{point}, #{email}, now())
+    </insert>
+
+    <insert id="saveHitsState" parameterType="hashmap">
+        insert into board_hits_tb
+        values(0, #{boardId} , #{email}, now())
     </insert>
 
     <delete id="deleteLike" parameterType="hashmap">

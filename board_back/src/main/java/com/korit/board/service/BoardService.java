@@ -99,6 +99,29 @@ public class BoardService {
         return boardMapper.getLikeState(paramsMap) > 0;
     }
 
+    public boolean getHitsState(int boardId) {
+        return boardMapper.getHitsState(boardId) > 0;
+    }
+
+    public boolean CheckHitsAndEmail(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+        return boardMapper.CheckHitsAndEmail(paramsMap) != 0;
+    }
+
+    public boolean saveHits(int boardId) {
+        Map<String, Object> paramsMap = new HashMap<>();
+
+        paramsMap.put("boardId", boardId);
+        paramsMap.put("email", SecurityContextHolder.getContext().getAuthentication().getName());
+
+        System.out.println("paramsMap: " + paramsMap);
+
+        return boardMapper.saveHitsState(paramsMap) > 0;
+    }
+
     public boolean setlLike(int boardId) {
         Map<String, Object> paramsMap = new HashMap<>();
 
