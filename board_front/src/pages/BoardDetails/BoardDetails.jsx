@@ -210,8 +210,6 @@ function BoardDetails(props) {
                     await instance.delete(`/board/delete/${boardId}`)
                         alert("삭제완료!");
                         navigete("/board/all/1");
-                } else {
-                    alert("작성자만 삭제할 수 있습니다.");
                 }
             } catch (error) {
                 console.error(error);
@@ -221,7 +219,6 @@ function BoardDetails(props) {
     
     const handleEditButtonClick = () => {
         navigete(`/board/${boardId}/edit`);
-        console.log(board);
     }
 
     return (

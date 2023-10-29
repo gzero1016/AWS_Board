@@ -64,7 +64,7 @@ const buttonContainer = css`
 
 function EditBoardDetails(props) {
     const navigete = useNavigate();
-    const [boardContent, setBoardContent] = useState({
+    const [ boardContent, setBoardContent ] = useState({
         title: "",
         content: "",
         categoryId: "",
@@ -76,6 +76,7 @@ function EditBoardDetails(props) {
     const { boardId } = useParams();
     const queryClient = useQueryClient();
     const [ board, setBoard ] = useState({});
+    const [ quillRendered, setQuillRendered ] = useState(false);
     const getBoard = useQuery(["getBoard"], async () => {
         try {
             return await instance.get(`/board/${boardId}`);
@@ -122,7 +123,7 @@ function EditBoardDetails(props) {
             categoryName: selectedOption?.label,
             boardId: boardId
         })
-    }, [selectedOption])
+    }, [selectedOption]);
 
     useEffect(() => {
         if (board && board.boardCategoryName) {
@@ -136,6 +137,7 @@ function EditBoardDetails(props) {
                     content: board.boardContent
                 });
             }
+            setQuillRendered(true);
         }
     }, [board, selectOptions]);
 
@@ -191,8 +193,6 @@ function EditBoardDetails(props) {
         }
     }
 
-    console.log(board);
-
     return (
         <RootContainer>
             <div>
@@ -205,7 +205,9 @@ function EditBoardDetails(props) {
                 </div>
                 <div><input css={titleInput} type="text" name='title' defaultValue={board.boardTitle} onChange={handleTitleInput} /></div>
                 <div>
-                    <ReactQuill style={{width: "928px", height: "510px"}} modules={modules} onChange={handleContentInput} defaultValue={board.boardContent}/>
+                    {quillRendered ? (
+                        <ReactQuill style={{ width: "928px", height: "510px" }} modules={modules} onChange={handleContentInput} defaultValue={board.boardContent} />
+                    ) : null}
                 </div>
             </div>
             <div css={buttonContainer}>
