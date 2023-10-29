@@ -40,7 +40,8 @@
         set
             board_title = #{boardTitle},
             board_category_id = #{boardCategoryId},
-            board_content = #{boardContent}
+            board_content = #{boardContent},
+            create_date = now()
         where
             board_id = #{boardId}
     </update>
