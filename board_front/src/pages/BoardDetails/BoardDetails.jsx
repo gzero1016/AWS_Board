@@ -109,6 +109,8 @@ function BoardDetails(props) {
         try {
             return await instance.get(`/board/${boardId}`);
         }catch(error) {
+            alert("해당 개시글을 불러올 수 없습니다.");
+            navigete("/board/all/1");
         }
     }, {
         refetchOnWindowFocus: false,

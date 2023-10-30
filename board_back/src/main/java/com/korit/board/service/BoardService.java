@@ -104,6 +104,7 @@ public class BoardService {
         return boardMapper.getHitsState(boardId) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean CheckHitsAndEmail(int boardId) {
         Map<String, Object> paramsMap = new HashMap<>();
 
@@ -112,6 +113,7 @@ public class BoardService {
         return boardMapper.CheckHitsAndEmail(paramsMap) != 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean saveHits(int boardId) {
         Map<String, Object> paramsMap = new HashMap<>();
 
@@ -123,6 +125,7 @@ public class BoardService {
         return boardMapper.saveHitsState(paramsMap) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean setlLike(int boardId) {
         Map<String, Object> paramsMap = new HashMap<>();
 
@@ -132,6 +135,7 @@ public class BoardService {
         return boardMapper.insertLikeState(paramsMap) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean cancelLike(int boardId) {
         Map<String, Object> paramsMap = new HashMap<>();
 
@@ -141,10 +145,12 @@ public class BoardService {
         return boardMapper.deleteLike(paramsMap) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean deleteBoard(int boardId) {
         return boardMapper.deleteBoard(boardId) > 0;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateBoard(UpdateBoardReqDto updateBoardReqDto){
         return boardMapper.updateBoard(updateBoardReqDto.toBoardEntity()) > 0;
     }
