@@ -183,7 +183,6 @@ function BoardWrite(props) {
                     await instance.post("/board/content", boardContent, option);
                     alert("게시물 작성이 완료되었습니다.");
                     queryClient.refetchQueries(["getPrincipal"]);
-                    console.log(principal);
                     window.location.replace("/board/all/1");
                 } catch (error) {
                     console.log(error);

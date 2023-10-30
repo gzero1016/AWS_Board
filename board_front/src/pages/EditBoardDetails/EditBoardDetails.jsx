@@ -186,11 +186,14 @@ function EditBoardDetails(props) {
             await instance.put(`/board/${boardId}/edit`, boardContent);
             alert("게시물 수정이 완료되었습니다.");
             queryClient.refetchQueries(["getPrincipal"]);
-            navigete("/board/all/1");
-            
+            navigete(`/board/${boardId}`);
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const handleBackSubmit = () => {
+        navigete(-1);
     }
 
     return (
@@ -211,7 +214,7 @@ function EditBoardDetails(props) {
                 </div>
             </div>
             <div css={buttonContainer}>
-                <button>취소</button>
+                <button onClick={handleBackSubmit}>취소</button>
                 <button onClick={handleWriteSubmit}>수정</button>
             </div>
         </RootContainer>

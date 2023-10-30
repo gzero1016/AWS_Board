@@ -1,6 +1,6 @@
 package com.korit.board.dto;
 
-import com.korit.board.entity.UserPoint;
+import com.korit.board.entity.User;
 import lombok.Data;
 
 @Data
@@ -8,10 +8,10 @@ public class UserPointReqDto {
     private String email;
     private int point;
 
-    public UserPoint toUserPoint() {
-        return UserPoint.builder()
+    public User toUserPoint() {
+        return User.builder()
                 .email(email)
-                .point(point)
+                .userPoint(point)
                 .build();
     }
 }

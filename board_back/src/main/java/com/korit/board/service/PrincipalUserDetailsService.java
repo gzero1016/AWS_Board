@@ -1,5 +1,6 @@
 package com.korit.board.service;
 
+import com.korit.board.dto.UserPointReqDto;
 import com.korit.board.entity.User;
 import com.korit.board.repository.UserMapper;
 import com.korit.board.security.PrincipalUser;
@@ -54,4 +55,7 @@ public class PrincipalUserDetailsService implements UserDetailsService, OAuth2Us
         return new DefaultOAuth2User(new ArrayList<>(), response, "id");
     }
 
+    public boolean usePoint(UserPointReqDto userPointReqDto) {
+        return userMapper.usePoint(userPointReqDto.toUserPoint()) > 0;
+    }
 }

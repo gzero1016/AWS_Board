@@ -221,11 +221,6 @@
         values(0, #{boardId}, #{email})
     </insert>
 
-    <insert id="usePoint">
-        insert into point_history_tb
-        values(0, 0, #{point}, #{email}, now())
-    </insert>
-
     <insert id="saveHitsState" parameterType="hashmap">
         insert into board_hits_tb
         values(0, #{boardId} , #{email}, now())

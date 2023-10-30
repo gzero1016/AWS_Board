@@ -4,6 +4,7 @@ import com.korit.board.dto.*;
 import com.korit.board.entity.Board;
 import com.korit.board.entity.BoardCategory;
 import com.korit.board.repository.BoardMapper;
+import com.korit.board.repository.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -146,10 +147,6 @@ public class BoardService {
 
     public boolean updateBoard(UpdateBoardReqDto updateBoardReqDto){
         return boardMapper.updateBoard(updateBoardReqDto.toBoardEntity()) > 0;
-    }
-
-    public boolean usePoint(UserPointReqDto userPointReqDto) {
-        return boardMapper.usePoint(userPointReqDto.toUserPoint()) > 0;
     }
 
 }

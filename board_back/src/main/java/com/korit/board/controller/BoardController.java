@@ -7,6 +7,7 @@ import com.korit.board.dto.UserPointReqDto;
 import com.korit.board.dto.SearchBoardListReqDto;
 import com.korit.board.dto.WriteBoardReqDto;
 import com.korit.board.service.BoardService;
+import com.korit.board.service.PrincipalUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 public class BoardController {
 
     private final BoardService boardService;
+    private final PrincipalUserDetailsService principalUserDetailsService;
 
     @GetMapping("/board/categories")
     public ResponseEntity<?> getCategories() {
@@ -89,7 +91,8 @@ public class BoardController {
     @PostMapping("board/content/point")
     public ResponseEntity<?> usePoint(@RequestBody UserPointReqDto userPointReqDto) {
         System.out.println(userPointReqDto);
-        return ResponseEntity.ok(boardService.usePoint(userPointReqDto));
+        System.out.println(userPointReqDto.toUserPoint());
+        return ResponseEntity.ok(principalUserDetailsService.usePoint(userPointReqDto));
     }
 
     @PutMapping("/board/{boardId}/edit")
