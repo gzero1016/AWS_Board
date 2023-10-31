@@ -1,11 +1,12 @@
 # 꼭 spring 안에있어야함
 spring:
+  profiles.include:
+    - secret
   security:
     oauth2:
       client:
         registration:
           kakao:
-            clientId: 99ef65ab95cab91c35ee4d8aa1c1e98c #REST API 키
             redirectUri: http://localhost:8080/login/oauth2/code/kakao
             authorizationGrantType: authorization_code
             clientAuthenticationMethod: POST
@@ -35,7 +36,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://db1.c246ajujriqy.ap-northeast-2.rds.amazonaws.com:3306/board
     username: admin
-    password: 1q2w3e4r
   mail:
     host: smtp.gmail.com
     port: 587
@@ -48,6 +48,3 @@ spring:
 mybatis:
   mapper-locations:
     - /mappers/*.xml
-
-jwt:
-  secret: nio70SPQ12YgHzG5hLsv16fZrU0teuLO5L6FIH3UlOlHGz55G/Rp40ukOuQ7rZPQCRCwzzuUKEGhral2ZziL0A==
